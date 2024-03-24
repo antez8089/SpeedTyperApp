@@ -1,4 +1,4 @@
-import Keyboard from "../Keyboard";
+import Keyboard from "../components/Keyboard";
 
 
 function KeyboardPage() {
