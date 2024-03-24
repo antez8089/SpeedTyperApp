@@ -1,0 +1,61 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 100px;
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.button {
+    border: 1px solid black;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 20px;
+    font-size: 50px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: rgba(255, 255, 255, 0.877);
+}
+
+.row {
+    display: flex;
+    gap: 20px;
+}
+
+#space {
+    height: 50px;
+    width: 300px;
+}
+
+.button.active {
+    background-color: rgba(255, 0, 0, 0.76);
+}
+
+.text {
+    height: 200px;
+    width: 1000px;
+    font-size: 40px;
+    border: 3px solid black;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.774);
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.wpm {
+    font-size: 100px;
+}
