@@ -20,5 +20,18 @@ Aplikacja zostanie stworzona w architekturze trzywarstwowej z podziałem na baz�
 - Raport o wynikach użytkownika (czas, błędy)
 - Personalizacja konta (baza własnych słów)
 
+### Wstępne założenia struktury bazy danych
+#### Tabele:
+ - Users:
+ Tabela zawierająca dane do uwierzytelniania użytkownika.
+ - WordsContainers:
+ Tabela zawierająca między innymi swoją nazwę, będąca połączona relacją z użytkownikiem.
+ - Words:
+ Tabela zaweierająca słowo, współczynnik pomyłek (dobierany na zasadzie tego jak często użytkownik mylił się na danym słowie), będąca połączona relacją ze zbiorem słów.\
+ Oraz inne tabele związane z osiągnięciami użytkownika, oraz jego personalnymi ustawieniami.\
+
+Daje nam to wstępną bazę danych w której użytkownik może mieć wiele swoich zbiorów słów, a każdy zbiór może posiadać wiele słów.\
+Dzięki temu użytkownik będzie miał swobodny wybór treningu pomiędzy swoimi zbiorami.
+
 ### API
 Na ten moment do pobierania słów korzystamy z API: https://random-word-api.herokuapp.com/home
