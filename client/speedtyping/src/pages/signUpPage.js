@@ -13,7 +13,11 @@ function SignUpPage() {
         }
 
         const userDataJson = formToJSON(userData);
-        const response = await api.post('/register', userDataJson);
+        const response = await api.post('/auth/sign-up', userDataJson, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
         console.log(response);
     }

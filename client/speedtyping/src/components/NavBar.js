@@ -34,6 +34,22 @@ function NavBar() {
                         Words
                     </NavLink>
                     </li>
+                    <li>
+                    <NavLink to="/sign-up" className={({isActive}) =>
+                    isActive ? "text-rose-600 rounded"
+                    : "block"}
+                    >
+                        SignUp
+                    </NavLink>
+                    </li>
+                    <li>
+                    <NavLink to="/login" className={({isActive}) =>
+                    isActive ? "text-rose-600 rounded"
+                    : "block"}
+                    >
+                        Login
+                    </NavLink>
+                    </li>
                 </ul>
             </div>
             </nav>
