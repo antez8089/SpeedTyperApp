@@ -37,7 +37,6 @@ Aplikacja zostanie stworzona w architekturze trzywarstwowej z podziałem na baz�
  Tabela zaweierająca słowo, współczynnik pomyłek (dobierany na zasadzie tego jak często użytkownik mylił się na danym słowie), będąca połączona relacją ze zbiorem słów.
 
 Oraz inne tabele związane z osiągnięciami użytkownika, oraz jego personalnymi ustawieniami.\
-
 Daje nam to wstępną bazę danych w której użytkownik może mieć wiele swoich zbiorów słów, a każdy zbiór może posiadać wiele słów.\
 Dzięki temu użytkownik będzie miał swobodny wybór treningu pomiędzy swoimi zbiorami.
 
