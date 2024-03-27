@@ -5,6 +5,7 @@ import WordsPage from './pages/wordsPage.js';
 import NavBar from './components/NavBar.js';
 import SignUpPage from './pages/signUpPage.js';
 import LoginPage from './pages/loginPage.js';
+import UserPage from './pages/userPage.js';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/words' element={<WordsPage/>} />
         <Route path='/sign-up' element={<SignUpPage/>} />
         <Route path='/login' element={<LoginPage/>} />
+        <Route path='/user' element={<UserPage/>} />
       </Routes>
     </HashRouter>
   );
