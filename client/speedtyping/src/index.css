@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body {
+    background-color: #1F2833;
+}
+
+
 html, body, #root {
     height: 100%;
     margin: 0;
@@ -17,16 +23,42 @@ html, body, #root {
     margin: auto;
 }
 
+.user-container {
+    min-height: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-between;
+    gap: 300px;
+    margin: auto;
+    padding: 80px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.user-photo {
+    border: 5px solid rgb(43, 2, 2);
+    height: 100px;
+    max-width: 100px;
+    border-radius: 10px;
+    padding: 2px 2px;
+}
+
+
 .keyboard {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 
 .button {
-    border: 1px solid black;
+    border: 2px solid #66FCF1;
     border-radius: 4px;
     display: flex;
     justify-content: center;
@@ -34,7 +66,8 @@ html, body, #root {
     padding: 4px 20px;
     font-size: 50px;
     font-family: "Lucida Console", "Courier New", monospace;
-    background-color: rgba(255, 255, 255, 0.877);
+    background-color: #C5C6C7;
+    transform: skew(-10deg)
 }
 
 .row {
@@ -48,7 +81,7 @@ html, body, #root {
 }
 
 .button.active {
-    background-color: rgba(255, 0, 0, 0.76);
+    background-color: #45A29E;
 }
 
 .text {

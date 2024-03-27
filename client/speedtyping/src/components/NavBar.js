@@ -5,11 +5,11 @@ import { Link, NavLink } from 'react-router-dom'
 function NavBar() {
     return (
         <div>
-            <nav className="bg-black">
+            <nav className="bg" style={{backgroundColor: '#0B0C10'}} >
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <Link to="/" className="self-center text-2xl  text-white">SpeedTyper</Link>
+                <Link to="/" className="self-center text-2xl" style={{color: '#66FCF1'}}>SpeedTyper</Link>
                 
-                <ul className="block font-medium flex p-2 items-center gap-6 text-white">
+                <ul className="block font-medium flex p-2 items-center gap-6"style={{color: '#66FCF1'}}>
                     <li>
                     <NavLink to="/" className={({isActive}) => 
                     isActive ? "text-rose-600 rounded"
@@ -48,6 +48,14 @@ function NavBar() {
                     : "block"}
                     >
                         Login
+                    </NavLink>
+                    </li>
+                    <li>
+                    <NavLink to="/user" className={({isActive}) =>
+                    isActive ? "text-rose-600 rounded"
+                    : "block"}
+                    >
+                        User
                     </NavLink>
                     </li>
                 </ul>
