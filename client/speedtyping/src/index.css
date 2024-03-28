@@ -22,14 +22,27 @@ html, body, #root {
     gap: 100px;
     margin: auto;
 }
+.text-container {
+    background-color: #C5C6C7;
+    border: 3px solid #45A29E;
+    padding: 30px;
+    width: 650px;
+    max-width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+}
 
 .user-container {
     min-height: 90%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-content: space-between;
-    gap: 300px;
+    gap: 100px;
     margin: auto;
     padding: 80px;
 }
@@ -41,13 +54,40 @@ html, body, #root {
 }
 
 .user-photo {
-    border: 5px solid rgb(43, 2, 2);
-    height: 100px;
-    max-width: 100px;
-    border-radius: 10px;
-    padding: 2px 2px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #66FCF1;
 }
 
+.usr {
+    background-color: #C5C6C7;
+    border: 3px solid #0B0C10;
+    padding: 80px;
+    width: 300px;
+    max-width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
+    border-radius: 7px;
+    gap: 100px;
+}
+
+.lol {
+    background-color: #C5C6C7;
+}
+
+.usr-bar {
+
+    height: 500px;
+    width: 1000px;
+    background-color: #C5C6C7;
+    border: 3px solid black;
+    overflow: hidden;
+}
 
 .keyboard {
     display: flex;
@@ -66,8 +106,14 @@ html, body, #root {
     padding: 4px 20px;
     font-size: 50px;
     font-family: "Lucida Console", "Courier New", monospace;
-    background-color: #C5C6C7;
+    background-image: linear-gradient(to right, #C5C6C7, #C5C6C7);
+    transition: background-image 2s;
     transform: skew(-10deg)
+}
+
+.button.active {
+    background-image: linear-gradient(to right, #C5C6C7, #45A29E );
+
 }
 
 .row {
@@ -75,18 +121,23 @@ html, body, #root {
     gap: 20px;
 }
 
-#space {
-    height: 50px;
-    width: 300px;
+h4 {
+    margin: 0 0 5px;
+    font-size: 40px;
+    font-family: "Lucida Console", "Courier New", monospace
 }
 
-.button.active {
-    background-color: #45A29E;
+
+ 
+#space {
+    height: 60px;
+    width: 400px;
 }
+
 
 .text {
-    height: 200px;
-    width: 1000px;
+    height: 100px;
+    width: 550px;
     font-size: 40px;
     border: 3px solid black;
     overflow: hidden;
