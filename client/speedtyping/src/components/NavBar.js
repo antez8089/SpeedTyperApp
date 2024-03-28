@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom'
 function NavBar() {
     return (
         <div>
-            <nav className="bg" style={{backgroundColor: '#0B0C10'}} >
+            <nav className="bg" style={{backgroundColor: '#1F2833'}} >
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="self-center text-2xl" style={{color: '#66FCF1'}}>SpeedTyper</Link>
                 
