@@ -2,16 +2,17 @@ package com.pw.speedtyping.service;
 
 import com.pw.speedtyping.database.models.User;
 import com.pw.speedtyping.database.repository.UserRepository;
-import com.pw.speedtyping.dtos.JwtDto;
 import com.pw.speedtyping.dtos.SignInDto;
+import com.pw.speedtyping.dtos.SignInResponseDto;
 import com.pw.speedtyping.dtos.SignUpDto;
+import com.pw.speedtyping.dtos.SignUpResponseDto;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -27,18 +28,13 @@ public class AuthService {
         this.authManager = authManager;
     }
 
-    public Map<String, Object> signUp(SignUpDto userSignUpData) {
-        Map<String, Object> response = new HashMap<>();
+    public SignUpResponseDto signUp(SignUpDto userSignUpData) {
 
         if (userRepository.findByUsername(userSignUpData.getUsername()) != null) {
-            response.put("registered", false);
-            response.put("message", "user with this username already exists");
-            return response;
+            return new SignUpResponseDto(false, "user with this username already exists");
         }
         if (userRepository.findByEmail(userSignUpData.getEmail()) != null) {
-            response.put("registered", false);
-            response.put("message", "user with this email already exists");
-            return response;
+            return new SignUpResponseDto(false, "user with this email already exists");
         }
 
         User user = new User(userSignUpData.getUsername(), userSignUpData.getEmail(), encoder.encode(userSignUpData.getPassword()));
@@ -46,19 +42,22 @@ public class AuthService {
         try {
             userRepository.save(user);
         } catch (Exception e) {
-            response.put("registered", false);
-            response.put("message", "invalid email");
-            return response;
+            return new SignUpResponseDto(false, "invalid email");
         }
-        response.put("registered", true);
-        response.put("message", "user registered");
-        return response;
+
+        return new SignUpResponseDto(true, "user registered");
 
     }
 
-    public JwtDto signIn(SignInDto userSignInData) {
-        authManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInData.getEmail(), userSignInData.getPassword()));
-        User user = userRepository.findByEmail(userSignInData.getEmail());
-        return new JwtDto(jwtService.generateToken(user));
+    public SignInResponseDto signIn(SignInDto userSignInData) {
+        try {
+            authManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInData.getEmail(), userSignInData.getPassword()));
+            User user = userRepository.findByEmail(userSignInData.getEmail());
+            return new SignInResponseDto(true, "login successful", jwtService.generateToken(user));
+        } catch (BadCredentialsException e) {
+            return new SignInResponseDto(false, "wrong password", null);
+        } catch (InternalAuthenticationServiceException e) {
+            return new SignInResponseDto(false, "user does not exist", null);
+        }
     }
 }
