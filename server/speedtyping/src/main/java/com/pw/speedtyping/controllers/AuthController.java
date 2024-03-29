@@ -1,6 +1,8 @@
 package com.pw.speedtyping.controllers;
 
-import com.pw.speedtyping.database.models.User;
+import com.pw.speedtyping.dtos.JwtDto;
+import com.pw.speedtyping.dtos.SignInDto;
+import com.pw.speedtyping.dtos.SignUpDto;
 import com.pw.speedtyping.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,15 +16,20 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService service;
+    private final AuthService authService;
 
-    public AuthController(AuthService service) {
-        this.service = service;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody User user) {
-        return ResponseEntity.ok(service.signUp(user));
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody SignUpDto userSignUpData) {
+        return ResponseEntity.ok(authService.signUp(userSignUpData));
+    }
+
+    @PostMapping("/sign-in")
+    public JwtDto signIn(@RequestBody SignInDto signInData) {
+        return authService.signIn(signInData);
     }
 
 }
