@@ -1,61 +1,47 @@
-import React, { useState } from 'react';
+import { formToJSON } from 'axios';
+import Cookies from 'js-cookie';
 import api from '../api/axiosConfig.js'
 
 
 function LoginPage() {
 
     const getTokenFromCookie = () => {
-        const cookieToken = document.cookie.split(';').find(cookie => cookie.trim().startsWith('token='));
-        if (cookieToken) {
-            return cookieToken.split('=')[1];
-        }
-        return null;
+        return Cookies.get('token');
     }
 
-    const setTokenInCookie = (tokenValue) => {
-        document.cookie = `token=${tokenValue}; Path=/; HttpOnly`;
-    };
+    const setTokenInCookie = (token) => {
+        Cookies.set('token', token, {path: '/'})
+    }
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        const userJsonData = formToJSON(new FormData(e.target));
+        const userData = new FormData(e.target);
 
-        //odbieranie danych z form
-        const response = api.post('/auth/sign-in', userJsonData, {
+        const userJsonData = formToJSON(userData);
+
+        const response = await api.post('/auth/sign-in', userJsonData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
 
-        if (response.data.get('logged_in')) {
+        if (response.data.logged_in) {
             const token = response.data.token;
             setTokenInCookie(token);
-            console.log(token);
         } else {
             console.log("login failed");
         }
 
     };
-        
-    const handleLogout = () => {
-        setTokenInCookie(null);
-    };
+
 
     return (
         <div className="flex justify-center">
-            <form className="flex flex-col ">
-                <div>
-                    <label htmlFor='Email'>Email</label>
-                    <input type='email' name='email' placeholder="email"/>
-                </div>
-
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input type='password' name='password'/>
-                </div>
-
-                <button onClick={handleLogin}>Login</button>
+            <form className="flex flex-col " onSubmit={handleLogin}>
+                <input type='email' name='email' placeholder="email"/>
+                <input type='password' name='password'/>
+                <input type='submit' />
             </form>
         </div>
     )
