@@ -12,7 +12,7 @@ function NavBar() {
                 <ul className="block font-medium flex p-2 items-center gap-6"style={{color: '#66FCF1'}}>
                     <li>
                     <NavLink to="/" className={({isActive}) => 
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         Home
@@ -20,7 +20,7 @@ function NavBar() {
                     </li>
                     <li>
                     <NavLink to="/keyboard" className={({isActive}) =>
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         Keyboard
@@ -28,7 +28,7 @@ function NavBar() {
                     </li>
                     <li>
                     <NavLink to="/words" className={({isActive}) =>
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         Words
@@ -36,7 +36,7 @@ function NavBar() {
                     </li>
                     <li>
                     <NavLink to="/sign-up" className={({isActive}) =>
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         SignUp
@@ -44,7 +44,7 @@ function NavBar() {
                     </li>
                     <li>
                     <NavLink to="/login" className={({isActive}) =>
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         Login
@@ -52,7 +52,7 @@ function NavBar() {
                     </li>
                     <li>
                     <NavLink to="/user" className={({isActive}) =>
-                    isActive ? "text-rose-600 rounded"
+                    isActive ? "text-sky-600 rounded"
                     : "block"}
                     >
                         User
