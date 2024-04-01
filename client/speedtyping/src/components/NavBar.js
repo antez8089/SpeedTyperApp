@@ -1,8 +1,15 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 
 function NavBar() {
+
+    const {
+        isAuthenticated,
+        logout
+    } = useAuth();
+
     return (
         <div>
             <nav className="bg" style={{backgroundColor: '#1F2833'}} >
@@ -34,6 +41,22 @@ function NavBar() {
                         Words
                     </NavLink>
                     </li>
+                    {isAuthenticated ?
+                    <>
+                    <li>
+                    <NavLink to="/user" className={({isActive}) =>
+                    isActive ? "text-sky-600 rounded"
+                    : "block"}
+                    >
+                        User
+                    </NavLink>
+                    </li>
+                    <li>
+                    <button onClick={logout} className="text-rose-600 rounded hover:text-rose-700">Logout</button>
+                    </li>
+                    </>
+                    :
+                    <>
                     <li>
                     <NavLink to="/sign-up" className={({isActive}) =>
                     isActive ? "text-sky-600 rounded"
@@ -50,14 +73,8 @@ function NavBar() {
                         Login
                     </NavLink>
                     </li>
-                    <li>
-                    <NavLink to="/user" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        User
-                    </NavLink>
-                    </li>
+                    </>
+                    }
                 </ul>
             </div>
             </nav>

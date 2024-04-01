@@ -1,17 +1,16 @@
 import { formToJSON } from 'axios';
-import Cookies from 'js-cookie';
 import api from '../api/axiosConfig.js'
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 
 function LoginPage() {
 
-    const getTokenFromCookie = () => {
-        return Cookies.get('token');
-    }
+    const {
+        login
+    } = useAuth();
 
-    const setTokenInCookie = (token) => {
-        Cookies.set('token', token, {path: '/'})
-    }
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -27,8 +26,9 @@ function LoginPage() {
         })
 
         if (response.data.logged_in) {
-            const token = response.data.token;
-            setTokenInCookie(token);
+            login(response.data.token);
+            console.log("login successful");
+            navigate('/user')
         } else {
             console.log("login failed");
         }

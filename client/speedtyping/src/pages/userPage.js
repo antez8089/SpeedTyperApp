@@ -1,11 +1,14 @@
 import UserQuick from "../components/Userquick";
 import UserBar from "../components/UserBar";
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 function UserPage() {
 
+    const { userData } = useAuth();
+
     return (
         <div className="user-container">
-            <UserQuick></UserQuick>
+            <UserQuick userData={userData}></UserQuick>
             <UserBar></UserBar>
         </div>
     )
