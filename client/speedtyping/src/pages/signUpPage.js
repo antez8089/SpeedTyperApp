@@ -1,19 +1,18 @@
 import { formToJSON } from 'axios';
 import api from '../api/axiosConfig.js'
+import Form from '../components/Form.js';
+
 
 function SignUpPage() {
 
-    const postData = async (e) => {
-        e.preventDefault();
-        const userData = new FormData(e.target);
-
-        if (userData.get('password')!==userData.get('password_confirmation')) {
+    const postData = async (userData) => {
+        console.log(userData);
+        if (userData.password !== userData.password_confirmation) {
             console.log('different passwords');
             return false;
         }
 
-        const userDataJson = formToJSON(userData);
-        const response = await api.post('/auth/sign-up', userDataJson, {
+        const response = await api.post('/auth/sign-up', userData, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -22,15 +21,18 @@ function SignUpPage() {
         console.log(response);
     }
 
+    const fields = [
+        { id: 'username', label: 'Username', type: 'text', value: '' },
+        { id: 'email', label: 'Email', type: 'email', value: '' },
+        { id: 'password', label: 'Password', type: 'password', value: '' },
+        { id: 'password_confirmation', label: 'Confirm Password', type: 'password', value: '' },
+    ]
+
     return(
-        <div>
-            <form onSubmit={postData}>
-                <input type="text" name="username" placeholder="username" required/>
-                <input type="email" name="email" placeholder="email" required/>
-                <input type="password" name="password" placeholder="password" required/>
-                <input type="password" name="password_confirmation" placeholder="confirm password" required/>
-                <input type="submit" />
-            </form>
+        <div className='flex justify-center'>
+            <div className='w-96'>
+                <Form fields={fields} onSubmit={postData} />
+            </div>
         </div>
     )
 

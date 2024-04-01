@@ -18,9 +18,9 @@ function App() {
     <HashRouter>
       <NavBar />
       <Routes>
-        <Route path='/' element={<HomePage/>} />
-        <Route path='/keyboard' element={<KeyboardPage/>} />
-        <Route path='/words' element={<WordsPage/>} />
+        {/* <Route path='/' element={<HomePage/>} /> */}
+        <Route path='/' element={<KeyboardPage/>} />
+        {/* <Route path='/words' element={<WordsPage/>} /> */}
         <Route path='/sign-up' element={<SignUpPage/>} />
         <Route path='/login' element={<LoginPage/>} />
         <Route path='/user' element={isAuthenticated ? <UserPage/> : <Navigate to='/login' />} />

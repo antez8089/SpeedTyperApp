@@ -17,62 +17,20 @@ function NavBar() {
                 <Link to="/" className="self-center text-2xl" style={{color: '#66FCF1'}}>SpeedTyper</Link>
                 
                 <ul className="block font-medium flex p-2 items-center gap-6"style={{color: '#66FCF1'}}>
-                    <li>
-                    <NavLink to="/" className={({isActive}) => 
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        Home
-                    </NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/keyboard" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        Keyboard
-                    </NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/words" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        Words
-                    </NavLink>
-                    </li>
+                    {/* <li><CustomNavLink to="/">Home</CustomNavLink></li> */}
+                    <li><CustomNavLink to="/">Keyboard</CustomNavLink></li>
+                    {/* <li><CustomNavLink to="/words">Words</CustomNavLink></li> */}
                     {isAuthenticated ?
                     <>
+                    <li><CustomNavLink to="/user">User</CustomNavLink></li>
                     <li>
-                    <NavLink to="/user" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        User
-                    </NavLink>
-                    </li>
-                    <li>
-                    <button onClick={logout} className="text-rose-600 rounded hover:text-rose-700">Logout</button>
+                        <button onClick={logout} className="text-rose-600 rounded hover:text-rose-700">Logout</button>
                     </li>
                     </>
                     :
                     <>
-                    <li>
-                    <NavLink to="/sign-up" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        SignUp
-                    </NavLink>
-                    </li>
-                    <li>
-                    <NavLink to="/login" className={({isActive}) =>
-                    isActive ? "text-sky-600 rounded"
-                    : "block"}
-                    >
-                        Login
-                    </NavLink>
-                    </li>
+                    <li><CustomNavLink to="/sign-up">SignUp</CustomNavLink></li>
+                    <li><CustomNavLink to="/login">Login</CustomNavLink></li>
                     </>
                     }
                 </ul>
@@ -82,4 +40,16 @@ function NavBar() {
     )
 }
 
-export default NavBar
+export default NavBar;
+
+
+function CustomNavLink({to, children}) {
+    return (
+        <NavLink to={to} className={({isActive}) =>
+        isActive ? "text-sky-600 rounded"
+        : "block hover:text-sky-700 rounded"}
+        >
+            {children}
+        </NavLink>
+    )
+}
