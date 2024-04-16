@@ -8,10 +8,12 @@ function TypingInput({ words }) {
         'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     ];
     
-
     const [currentPos, setCurrentPos] = useState(0);
     const [testWords, setTestWords] = useState("");
     const [wordDivs, setWordDivs] = useState([]);
+    const [timerStarted, setTimerStarted] = useState(false)
+    const [startTime, setStartTime] = useState(null)
+    const [timerEnded, setTimerEnded] = useState(false)
 
     const { keyPressed } = useKeyPress();
 
@@ -68,14 +70,29 @@ function TypingInput({ words }) {
         }
     }
 
+    const calculateWPM = () => {
+        const writingTime = (Date.now()-startTime)/1000
+        const wpm = words.length*60/writingTime
+        const wpmDiv = document.body.querySelector("#wpm")
+        wpmDiv.innerHTML = `WPM: ${wpm}`
+    }
+
     useEffect(() => {
         separateWords(words)
         setTestWords(words.join(" "))
     }, [words])
 
     useEffect(() => {
+        if (!timerStarted && keyPressed) {
+            setStartTime(Date.now())
+            setTimerStarted(true)
+        }
         if (0 <= currentPos && currentPos < testWords.length) {
             updateCursorPosition(keyPressed)
+        }
+        if (currentPos == testWords.length-1 && keyPressed !== "Backspace" && !timerEnded) {
+            setTimerEnded(true)
+            calculateWPM()
         }
     }, [keyPressed])
 

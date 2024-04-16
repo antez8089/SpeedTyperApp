@@ -11,7 +11,7 @@ function KeyboardPage() {
   const getWords = async () => {
     const response = await api.get("/words", {
         params: {
-            num: 10
+            num: 7
         }
     });
     setWords(response.data)
@@ -25,9 +25,8 @@ function KeyboardPage() {
     <div className='container'>
       <div className="text-container">
         <h4>Let's Type!</h4>
-
+        <div id="wpm">WPM: </div>
         <TypingInput words={words}></TypingInput>
-        
       </div>
       <Keyboard></Keyboard>
     </div>
