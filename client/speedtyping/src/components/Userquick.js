@@ -1,4 +1,11 @@
-function UserQuick() {
+import { useEffect } from "react";
+
+function UserQuick( { userData }) {
+
+    useEffect(() => {
+        console.log(userData);
+    }, [])
+
   return (
     <div className="usr">
         <div className="user-photo">
@@ -6,7 +13,7 @@ function UserQuick() {
         </div>
         <div className="user-info">
             <h2>Imie: Tu imie</h2>
-            <p>Email: Tu email</p>
+            <p>Email: {userData.sub}</p>
             <p>Wiek: tu wiek</p>
         </div>
     </div>
