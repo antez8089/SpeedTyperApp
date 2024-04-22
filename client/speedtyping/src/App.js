@@ -22,7 +22,7 @@ function App() {
         <Route path='/' element={<KeyboardPage/>} />
         {/* <Route path='/words' element={<WordsPage/>} /> */}
         <Route path='/sign-up' element={<SignUpPage/>} />
-        <Route path='/login' element={<LoginPage/>} />
+        <Route path='/login' element={!isAuthenticated ? <LoginPage/> : <Navigate to='/user' />} />
         <Route path='/user' element={isAuthenticated ? <UserPage/> : <Navigate to='/login' />} />
       </Routes>
     </HashRouter>

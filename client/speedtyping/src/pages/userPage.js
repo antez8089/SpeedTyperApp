@@ -8,7 +8,7 @@ function UserPage() {
 
     return (
         <div className="user-container">
-            <UserQuick userData={userData}></UserQuick>
+            <UserQuick></UserQuick>
             <UserBar></UserBar>
         </div>
     )

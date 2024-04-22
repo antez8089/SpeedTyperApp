@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-function UserQuick( { userData }) {
+function UserQuick() {
 
     useEffect(() => {
-        console.log(userData);
+        // TODO: Fetch user data from the server
     }, [])
 
   return (
@@ -13,7 +13,7 @@ function UserQuick( { userData }) {
         </div>
         <div className="user-info">
             <h2>Imie: Tu imie</h2>
-            <p>Email: {userData.sub}</p>
+            <p>Email: Tu email</p>
             <p>Wiek: tu wiek</p>
         </div>
     </div>

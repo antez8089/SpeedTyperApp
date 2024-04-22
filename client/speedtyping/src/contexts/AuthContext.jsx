@@ -1,31 +1,49 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { jwtDecode } from 'jwt-decode';
+import api from "../api/axiosConfig";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [token, setToken] = useState(null);
-    const [userData, setUserData] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const login = async (token) => {
-        Cookies.set('token', token, {path: '/'})
-        const userData = jwtDecode(token);
-        setToken(token);
-        setUserData(userData);
-        setIsAuthenticated(true);
+    useEffect(() => {
+        const token = Cookies.get('access_token');
+        if (token) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, []);
+
+
+    const login = async (email, password) => {
+        const body = JSON.stringify({
+            email,
+            password
+        });
+        try {
+            const response = await api.post('/auth/sign-in', body, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            if (response.data.logged_in) {
+                Cookies.set('access_token', response.data.token, {path: '/'});
+                setIsAuthenticated(true);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const logout = () => {
-        Cookies.remove('token', { path: '/' });
-        setToken(null);
-        setUserData(null);
+        Cookies.remove('access_token', { path: '/' });
         setIsAuthenticated(false);
     }
 
     return (
-        <AuthContext.Provider value={{ token, userData, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

@@ -14,20 +14,8 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = async (userData) => {
-        const response = await api.post('/auth/sign-in', userData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.data.logged_in) {
-            login(response.data.token);
-            console.log("login successful");
-            navigate('/user')
-        } else {
-            console.log("login failed");
-        }
-
+        login(userData.email, userData.password);
+        navigate('/user')
     };
 
     const fields = [
