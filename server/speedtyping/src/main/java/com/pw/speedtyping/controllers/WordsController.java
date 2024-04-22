@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class WordsController {
 
     @GetMapping("/words")
-    public String getWords(@RequestParam(name = "num", required = false, defaultValue = "1") String number_of_words) {
-        return WordsApiManager.getWords(Integer.parseInt(number_of_words));
+    public String getWords(@RequestParam(name = "num", required = false, defaultValue = "1") String number_of_words,
+                           @RequestParam(name = "len", required = false, defaultValue = "7") String words_length) {
+        return WordsApiManager.getWords(Integer.parseInt(number_of_words), Integer.parseInt(words_length));
     }
 }

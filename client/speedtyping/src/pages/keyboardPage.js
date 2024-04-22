@@ -11,7 +11,8 @@ function KeyboardPage() {
   const getWords = async () => {
     const response = await api.get("/words", {
         params: {
-            num: 7
+            num: 9,
+            len: 7
         }
     });
     setWords(response.data)

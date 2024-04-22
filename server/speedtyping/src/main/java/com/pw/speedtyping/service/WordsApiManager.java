@@ -10,12 +10,12 @@ import java.net.http.HttpResponse;
 
 public class WordsApiManager {
 
-    public static String getWords(Integer number_of_words) {
+    public static String getWords(Integer number_of_words, Integer words_length) {
         URI uri = null;
         HttpResponse<String> response = null;
         HttpClient client = HttpClient.newHttpClient();
         try {
-            uri = new URI(String.format("https://random-word-api.herokuapp.com/word?number=%s", number_of_words));
+            uri = new URI(String.format("https://random-word-api.herokuapp.com/word?number=%s&length=%s", number_of_words, words_length));
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
