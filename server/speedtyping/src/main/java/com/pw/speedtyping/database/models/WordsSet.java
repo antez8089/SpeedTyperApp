@@ -30,4 +30,8 @@ public class WordsSet {
         this.wordSetName = wordSetName;
         this.user = user;
     }
+
+    public String getWordSetName() {
+        return wordSetName;
+    }
 }

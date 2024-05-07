@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface WordsSetRepository extends JpaRepository<WordsSet, Long> {
     List<WordsSet> findByUser(User user);
-    WordsSet findByUserAndId(User user, Long id);
+    WordsSet findByUserAndWordSetName(User user, String wordSetName);
 }

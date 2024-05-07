@@ -25,4 +25,8 @@ public class Word {
         this.word = word;
         this.wordsSet = wordsSet;
     }
+
+    public String getWord() {
+        return word;
+    }
 }
