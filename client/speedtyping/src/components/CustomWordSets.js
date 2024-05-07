@@ -44,6 +44,7 @@ function CustomWordSets() {
                     ? wordSets.map((wordSet) => {
                         return (
                             <WordSet
+                            key={wordSet.id}
                             wordSet={wordSet}
                             handleDelete={() => handleDelete(wordSet.id)}
                             handleEdit={() => {
@@ -74,7 +75,6 @@ function WordSet({ wordSet, handleDelete, handleEdit }) {
     
     return (
         <div
-        key={wordSet.id}
         className="bg-gray-700 p-2 my-2 rounded-lg w-44 hover:bg-gray-600"
         onMouseEnter={() => setButtonsVisible(true)}
         onMouseLeave={() => setButtonsVisible(false)}
