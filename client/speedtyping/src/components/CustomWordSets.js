@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import api from"../api/axiosConfig"
+import Cookies from "js-cookie";
 
 
 
@@ -9,17 +11,40 @@ function CustomWordSets() {
     const [selectedSetData, setSelectedSetData] = useState();
 
     useEffect(() => {
-        setWordSets([
-            {id: 1, name: "Animals", words: ["dog", "cat", "bird", "fish", "rabbit"]},
-            {id: 2, name: "Fruits", words: ["apple", "banana", "orange", "grape", "kiwi"]},
-            {id: 3, name: "Colors", words: ["red", "blue", "yellow", "green", "purple"]},
-            {id: 4, name: "Countries", words: ["USA", "Canada", "Mexico", "Brazil", "Argentina"]},
-            {id: 5, name: "Programming", words: ["javascript", "python", "java", "c++", "ruby"]}
-        ])
+        loadWordSets();
     }, [])
 
+    const loadWordSets = async () => {
+        const accessToken = Cookies.get("access_token");
+
+        const response = await api.get("/user/new-get-all-sets", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        setWordSets(response.data);
+    }
+
+    const createWordSet = async (data) => {
+        const accessToken = Cookies.get("access_token");
+
+        const body = {
+            words: data.words,
+            name: data.name
+        }
+
+        const response = await api.post("/user/new-words-set", body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+    }
+
+
     const handleCreateSubmit = (data) => {
-        console.log(data);
+        createWordSet(data);
         setWordSets([...wordSets, {id: wordSets.length + 1, ...data}]);
         setIsModalCreateVisible(false);
     }
@@ -44,7 +69,7 @@ function CustomWordSets() {
                     ? wordSets.map((wordSet) => {
                         return (
                             <WordSet
-                            key={wordSet.id}
+                            key={wordSet.name}
                             wordSet={wordSet}
                             handleDelete={() => handleDelete(wordSet.id)}
                             handleEdit={() => {

@@ -3,6 +3,7 @@ package com.pw.speedtyping.controllers;
 import com.pw.speedtyping.database.models.User;
 import com.pw.speedtyping.dtos.WordDto;
 import com.pw.speedtyping.dtos.WordsSetDto;
+import com.pw.speedtyping.dtos.NewWordsSetDto;
 import com.pw.speedtyping.service.WordsApiManager;
 import com.pw.speedtyping.service.WordsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +27,18 @@ public class WordsController {
                            @RequestParam(name = "len", required = false, defaultValue = "7") String words_length) {
         return WordsApiManager.getWords(Integer.parseInt(number_of_words), Integer.parseInt(words_length));
     }
+
+
+    @PostMapping("/user/new-words-set")
+    public boolean newWordsSet(@AuthenticationPrincipal User user, @RequestBody NewWordsSetDto newWordsSetDto) {
+        return wordsService.newSaveWordsSet(user, newWordsSetDto);
+    }
+
+    @GetMapping("/user/new-get-all-sets")
+    public List<NewWordsSetDto> getAllSets(@AuthenticationPrincipal User user) {
+        return wordsService.getAllSets(user);
+    }
+
 
     @PostMapping("/user/save-words-set")
     public boolean saveWordsSet(@AuthenticationPrincipal User user, @RequestBody WordsSetDto wordsSetDto) {

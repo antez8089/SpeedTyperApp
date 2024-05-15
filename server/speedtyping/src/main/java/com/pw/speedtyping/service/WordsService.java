@@ -7,6 +7,7 @@ import com.pw.speedtyping.database.repository.WordRepository;
 import com.pw.speedtyping.database.repository.WordsSetRepository;
 import com.pw.speedtyping.dtos.WordDto;
 import com.pw.speedtyping.dtos.WordsSetDto;
+import com.pw.speedtyping.dtos.NewWordsSetDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,41 @@ public class WordsService {
     public WordsService(WordsSetRepository wordsSetRepository, WordRepository wordRepository) {
         this.wordsSetRepository = wordsSetRepository;
         this.wordRepository = wordRepository;
+    }
+
+    public boolean newSaveWordsSet(User user, NewWordsSetDto wordsSetDto) {
+        String newWordSetName = wordsSetDto.getName();
+        System.out.println("NewWordsSetDto: " + wordsSetDto);
+        System.out.println("newWordSetName: " + newWordSetName);
+        if (wordsSetRepository.findByUserAndWordSetName(user, newWordSetName) != null) {
+            return false;
+        }
+        WordsSet wordsSet = new WordsSet(newWordSetName, user);
+        try {
+            wordsSetRepository.save(wordsSet);
+            for (String wordToSave : wordsSetDto.getWords()) {
+                Word word = new Word(wordToSave, wordsSet);
+                wordRepository.save(word);
+            }
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public List<NewWordsSetDto> getAllSets(User user) {
+        List<WordsSet> wordsSets = wordsSetRepository.findByUser(user);
+        List<NewWordsSetDto> newWordsSetDtos = new ArrayList<>();
+        for (WordsSet wordsSet: wordsSets) {
+            List<Word> words = wordRepository.findByWordsSet(wordsSetRepository.findByUserAndWordSetName(user, wordsSet.getWordSetName()));
+            List<String> wordsStrings = new ArrayList<>();
+            for (Word word: words) {
+                wordsStrings.add(word.getWord());
+            }
+            newWordsSetDtos.add(new NewWordsSetDto(wordsStrings, wordsSet.getWordSetName()));
+        }
+        return newWordsSetDtos;
     }
 
     public boolean saveWordsSet(User user, WordsSetDto wordsSetDto) {
