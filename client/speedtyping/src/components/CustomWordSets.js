@@ -26,6 +26,21 @@ function CustomWordSets() {
         setWordSets(response.data);
     }
 
+    const deleteWordsSet = async (wordsSet) => {
+        const accessToken = Cookies.get("access_token");
+
+        const body = {
+            name: wordsSet.name
+        }
+
+        const response = await api.post("/user/delete-words-set", body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+    }
+
     const createWordSet = async (data) => {
         const accessToken = Cookies.get("access_token");
 
@@ -55,7 +70,13 @@ function CustomWordSets() {
     }
 
     const handleDelete = (id) => {
-        setWordSets(wordSets.filter((wordSet) => wordSet.id !== id));
+        wordSets.map((wordSet, index) => {
+            if (index == id) {
+                deleteWordsSet(wordSet)
+            }
+        })
+        const updatedWordSets = wordSets.filter((wordSet, index) => index !== id)
+        setWordSets(updatedWordSets)
     }
 
     return (
@@ -66,12 +87,12 @@ function CustomWordSets() {
                 </div>
                 <div className="my-3 pr-2 flex flex-col overflow-y-scroll max-h-96 custom-scrollbar">
                     {wordSets.length > 0
-                    ? wordSets.map((wordSet) => {
+                    ? wordSets.map((wordSet, index) => {
                         return (
                             <WordSet
                             key={wordSet.name}
                             wordSet={wordSet}
-                            handleDelete={() => handleDelete(wordSet.id)}
+                            handleDelete={() => handleDelete(index)}
                             handleEdit={() => {
                                 setSelectedSetData(wordSet);
                                 setIsModalEditVisible(true);

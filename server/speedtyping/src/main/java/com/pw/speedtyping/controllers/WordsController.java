@@ -59,4 +59,9 @@ public class WordsController {
     public List<String> getWords(@AuthenticationPrincipal User user, @RequestBody WordsSetDto wordsSetDto) {
         return wordsService.getWords(user, wordsSetDto);
     }
+
+    @PostMapping("/user/delete-words-set")
+    public boolean deleteWordsSet(@AuthenticationPrincipal User user, @RequestBody WordsSetDto wordsSetDto) {
+        return wordsService.deleteWordsSet(user, wordsSetDto);
+    }
 }

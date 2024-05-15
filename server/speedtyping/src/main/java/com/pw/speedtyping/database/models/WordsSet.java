@@ -20,7 +20,7 @@ public class WordsSet {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(mappedBy = "wordsSet")
+    @OneToMany(mappedBy = "wordsSet", cascade = CascadeType.ALL)
     private List<Word> words;
 
 

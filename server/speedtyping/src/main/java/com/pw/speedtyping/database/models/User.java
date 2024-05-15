@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<WordsSet> wordsSetList;
 
     public User() {}

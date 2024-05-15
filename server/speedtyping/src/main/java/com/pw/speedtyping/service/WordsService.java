@@ -103,4 +103,13 @@ public class WordsService {
         }
         return wordsStrings;
     }
+
+    public boolean deleteWordsSet(User user, WordsSetDto wordsSetDto) {
+        try {
+            wordsSetRepository.delete(wordsSetRepository.findByUserAndWordSetName(user, wordsSetDto.getName()));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
