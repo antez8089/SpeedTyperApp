@@ -5,7 +5,7 @@ import api from "../api/axiosConfig";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     useEffect(() => {
         const token = Cookies.get('access_token');

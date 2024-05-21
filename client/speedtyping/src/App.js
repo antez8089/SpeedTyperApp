@@ -8,11 +8,16 @@ import NavBar from './components/NavBar.js';
 import SignUpPage from './pages/signUpPage.js';
 import LoginPage from './pages/loginPage.js';
 import UserPage from './pages/userPage.js';
+import MultiPlayerPage from './pages/multiPlayerPage.js';
 
 
 function App() {
 
   const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated === null) {
+    return <h1 className='bg-white'>Loading</h1>
+  }
 
   return (
     <HashRouter>
@@ -24,6 +29,7 @@ function App() {
         <Route path='/sign-up' element={<SignUpPage/>} />
         <Route path='/login' element={!isAuthenticated ? <LoginPage/> : <Navigate to='/user' />} />
         <Route path='/user' element={isAuthenticated ? <UserPage/> : <Navigate to='/login' />} />
+        <Route path='/fight' element={isAuthenticated ? <MultiPlayerPage/> : <Navigate to='/login' />} />
       </Routes>
     </HashRouter>
   );

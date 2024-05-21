@@ -25,6 +25,12 @@ public class JwtService {
     @Value("${token.expiration.time}")
     private Long expirationTime;
 
+    private final UserService userService;
+
+    public JwtService(UserService userService) {
+        this.userService = userService;
+    }
+
     public String extractUserName(String token) {
         try {
             return extractClaim(token, Claims::getSubject);
@@ -92,6 +98,15 @@ public class JwtService {
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public UserDetails getUserDetailsFromToken(String token) throws InvalidJwtTokenException {
+        String username = extractUserName(token);
+        UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
+        if (!isTokenValid(token, userDetails)) {
+            throw new InvalidJwtTokenException("Invalid token");
+        }
+        return userDetails;
     }
 
 }
