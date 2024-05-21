@@ -1,9 +1,10 @@
 package com.pw.speedtyping.controllers;
 
 import com.pw.speedtyping.database.models.User;
+import com.pw.speedtyping.dtos.EditWordsSetDto;
+import com.pw.speedtyping.dtos.NewWordsSetDto;
 import com.pw.speedtyping.dtos.WordDto;
 import com.pw.speedtyping.dtos.WordsSetDto;
-import com.pw.speedtyping.dtos.NewWordsSetDto;
 import com.pw.speedtyping.service.WordsApiManager;
 import com.pw.speedtyping.service.WordsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -63,5 +64,10 @@ public class WordsController {
     @PostMapping("/user/delete-words-set")
     public boolean deleteWordsSet(@AuthenticationPrincipal User user, @RequestBody WordsSetDto wordsSetDto) {
         return wordsService.deleteWordsSet(user, wordsSetDto);
+    }
+
+    @PostMapping("/user/edit-words-set")
+    public boolean editWordsSet(@AuthenticationPrincipal User user, @RequestBody EditWordsSetDto editWordsSetDto) {
+        return wordsService.editWordsSet(user, editWordsSetDto);
     }
 }

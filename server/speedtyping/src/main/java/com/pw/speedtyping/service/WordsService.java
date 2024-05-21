@@ -5,6 +5,7 @@ import com.pw.speedtyping.database.models.Word;
 import com.pw.speedtyping.database.models.WordsSet;
 import com.pw.speedtyping.database.repository.WordRepository;
 import com.pw.speedtyping.database.repository.WordsSetRepository;
+import com.pw.speedtyping.dtos.EditWordsSetDto;
 import com.pw.speedtyping.dtos.WordDto;
 import com.pw.speedtyping.dtos.WordsSetDto;
 import com.pw.speedtyping.dtos.NewWordsSetDto;
@@ -107,6 +108,26 @@ public class WordsService {
     public boolean deleteWordsSet(User user, WordsSetDto wordsSetDto) {
         try {
             wordsSetRepository.delete(wordsSetRepository.findByUserAndWordSetName(user, wordsSetDto.getName()));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean editWordsSet(User user, EditWordsSetDto editWordsSetDto) {
+        if (wordsSetRepository.findByUserAndWordSetName(user, editWordsSetDto.getName()) != null && !editWordsSetDto.getName().equals(editWordsSetDto.getOldName())) {
+            return false;
+        }
+
+        try {
+            WordsSet oldWordsSet = wordsSetRepository.findByUserAndWordSetName(user, editWordsSetDto.getOldName());
+            wordRepository.deleteAll(wordRepository.findByWordsSet(oldWordsSet));
+            oldWordsSet.setWordSetName(editWordsSetDto.getName());
+            wordsSetRepository.save(oldWordsSet);
+            for (String wordToSave: editWordsSetDto.getWords()) {
+                Word word = new Word(wordToSave, oldWordsSet);
+                wordRepository.save(word);
+            }
             return true;
         } catch (Exception e) {
             return false;

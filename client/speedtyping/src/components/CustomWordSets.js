@@ -57,6 +57,24 @@ function CustomWordSets() {
         });
     }
 
+    const editWordsSet = async (data) => {
+        const accessToken = Cookies.get("access_token");
+
+        const body = {
+            oldWords: selectedSetData.words,
+            oldName: selectedSetData.name,
+            words: data.words.trim().split(' ').filter(word => word !== ''),
+            name: data.name
+        }
+
+        const response = await api.post("/user/edit-words-set", body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+    }
+
 
     const handleCreateSubmit = (data) => {
         createWordSet(data);
@@ -65,7 +83,7 @@ function CustomWordSets() {
     }
 
     const handleEditSubmit = (data) => {
-        console.log(data);
+        editWordsSet(data);
         setIsModalEditVisible(false);
     }
 

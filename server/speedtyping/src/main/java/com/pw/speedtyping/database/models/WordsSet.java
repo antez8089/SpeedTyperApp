@@ -34,4 +34,8 @@ public class WordsSet {
     public String getWordSetName() {
         return wordSetName;
     }
+
+    public void setWordSetName(@NotNull String wordSetName) {
+        this.wordSetName = wordSetName;
+    }
 }
