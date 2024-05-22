@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import Keyboard from "../components/Keyboard";
 import TypingInput from "../components/TypingInput";
 import api from"../api/axiosConfig"
+import { useLocation } from "react-router-dom";
 
 
 function KeyboardPage() {
+
+  const location = useLocation();
+  const { userWords } = location.state || { userWords: [] };
 
   const [words, setWords] = useState([]);
 
@@ -19,7 +23,11 @@ function KeyboardPage() {
   }
 
   useEffect(() => {
-    getWords()
+    if (userWords && userWords.length > 0) {
+      setWords(userWords)
+    } else {
+      getWords()
+    }
   }, [])
   
   return (

@@ -2,11 +2,6 @@ import React, { useState, useEffect} from 'react'
 import useKeyPress from '../hooks/useKeyPress'
 
 function TypingInput({ words }) {
-
-    const lowercaseLetters = [
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-    ];
     
     const [currentPos, setCurrentPos] = useState(0);
     const [testWords, setTestWords] = useState("");
@@ -51,9 +46,12 @@ function TypingInput({ words }) {
         letter.classList.remove("wrong-letter")
     }
 
+    const isCharacter = (str) => {
+        return str && str.length === 1 && str.match(/[\S ]/);
+    };
 
     const updateCursorPosition = (keyCode) => {
-        if ((lowercaseLetters.includes(keyCode) || keyCode===" ") && currentPos !== testWords.length-1) {
+        if (isCharacter(keyCode) && currentPos !== testWords.length-1) {
             let letter = document.body.querySelector(`#letter${currentPos}`)
             letter.classList.remove("cursor")
             letter = document.body.querySelector(`#letter${currentPos+1}`)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from"../api/axiosConfig"
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,6 +10,8 @@ function CustomWordSets() {
     const [isModalCreateVisible, setIsModalCreateVisible] = useState(false);
     const [isModalEditVisible, setIsModalEditVisible] = useState(false);
     const [selectedSetData, setSelectedSetData] = useState();
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         loadWordSets();
@@ -97,6 +100,10 @@ function CustomWordSets() {
         setWordSets(updatedWordSets)
     }
 
+    const handleTrain = (wordSet) => {
+        navigate("/", { state: { userWords: wordSet.words } });
+    }
+
     return (
         <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between">
             <div>
@@ -110,6 +117,7 @@ function CustomWordSets() {
                             <WordSet
                             key={wordSet.name}
                             wordSet={wordSet}
+                            handleTrain={() => handleTrain(wordSet)}
                             handleDelete={() => handleDelete(index)}
                             handleEdit={() => {
                                 setSelectedSetData(wordSet);
@@ -134,7 +142,7 @@ function CustomWordSets() {
 export default CustomWordSets;
 
 
-function WordSet({ wordSet, handleDelete, handleEdit }) {
+function WordSet({ wordSet, handleDelete, handleEdit, handleTrain }) {
     const [buttonsVisible, setButtonsVisible] = useState(false);
     
     return (
@@ -143,12 +151,17 @@ function WordSet({ wordSet, handleDelete, handleEdit }) {
         onMouseEnter={() => setButtonsVisible(true)}
         onMouseLeave={() => setButtonsVisible(false)}
         >
-            <div className="flex justify-between gap-4 h-14">
+            <div className="flex justify-between gap-4 h-25">
                 <div className="max-w-24">
                     <h2 className="text-sky-400 font-bold truncate">{wordSet.name}</h2>
                     <p className="text-sky-600">{wordSet.words.length} words</p>
                 </div>
                 <div className={`flex flex-col gap-1 ${buttonsVisible ? 'block' : 'hidden'}`}>
+                    <button
+                    onClick={handleTrain}
+                    className="bg-yellow-500 hover:bg-yellow-700 rounded-lg">
+                        Train
+                    </button>
                     <button
                     onClick={handleEdit}
                     className="bg-blue-500 hover:bg-blue-700 rounded-lg hover:cursor-pointer">
