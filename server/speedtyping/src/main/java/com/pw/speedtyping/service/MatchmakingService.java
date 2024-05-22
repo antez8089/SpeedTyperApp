@@ -15,6 +15,7 @@ public class MatchmakingService {
 
     private final ConcurrentLinkedQueue<User> queue = new ConcurrentLinkedQueue<>();
     private final Map<String, String> activeMatches = new ConcurrentHashMap<>();
+    private final Map<String, String> gameSets = new ConcurrentHashMap<>();
     private final SimpMessagingTemplate template;
     private final UserRepository userRepository;
 
@@ -41,6 +42,21 @@ public class MatchmakingService {
                 template.convertAndSendToUser(player.getUsername(), "/queue/match", opponent.getUsername());
                 template.convertAndSendToUser(opponent.getUsername(), "/queue/match", player.getUsername());
             }
+        }
+    }
+
+    public synchronized void sendWords(User user) {
+        if (activeMatches.containsKey(user.getUsername())) {
+            String opponentName = activeMatches.get(user.getUsername());
+            String words;
+            if (gameSets.containsKey(opponentName)) {
+                words = gameSets.get(opponentName);
+                gameSets.remove(opponentName);
+            } else {
+                words = WordsApiManager.getWords(63, 5);
+                gameSets.put(user.getUsername(), words);
+            }
+            template.convertAndSendToUser(opponentName, "/queue/match/words", words);
         }
     }
 

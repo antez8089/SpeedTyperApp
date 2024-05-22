@@ -27,8 +27,6 @@ public class WordsService {
 
     public boolean newSaveWordsSet(User user, NewWordsSetDto wordsSetDto) {
         String newWordSetName = wordsSetDto.getName();
-        System.out.println("NewWordsSetDto: " + wordsSetDto);
-        System.out.println("newWordSetName: " + newWordSetName);
         if (wordsSetRepository.findByUserAndWordSetName(user, newWordSetName) != null) {
             return false;
         }

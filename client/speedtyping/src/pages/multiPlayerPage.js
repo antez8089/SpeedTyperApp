@@ -4,9 +4,12 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import TypingInput from '../components/TypingInput';
+import Keyboard from '../components/Keyboard';
 
 function MultiPlayerPage() {
 
+    const [gameWords, setGameWords] = useState(null);
     const accessToken = Cookies.get("access_token");
     const decode = jwtDecode(accessToken);
     const userName = decode.sub;
@@ -24,12 +27,17 @@ function MultiPlayerPage() {
                 stompClient.subscribe(`/user/${userName}/queue/match`, (message) => {
                     alert(`Match against ${message.body}`);
                     setOpponent(message.body);
+                    getWords();
                 });
                 stompClient.subscribe(`/user/${userName}/queue/disconnect`, (message) => {
                     alert(`User ${message.body} disconnected`);
                     setOpponent(null);
+                    setGameWords(null);
                     connectingToLobby();
                 });
+                stompClient.subscribe(`/user/${userName}/queue/match/words`, (message) => {
+                    setGameWords(JSON.parse(message.body))
+                })
             },
             onStompError: (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
@@ -37,8 +45,16 @@ function MultiPlayerPage() {
             },
         });
         const disconnectingFromLobby = () => {
+            setGameWords(null);
             stompClient.publish({
                 destination: '/app/disconnect',
+                body: accessToken
+            });
+        }
+
+        const getWords = () => {
+            stompClient.publish({
+                destination: '/app/get-game-words',
                 body: accessToken
             });
         }
@@ -65,9 +81,31 @@ function MultiPlayerPage() {
     }, [accessToken, userName, location]);
 
     return (
-        <div className='bg-white'>
-             {opponent ? `Match against ${opponent}` : 'Waiting for opponent...'}
-        </div>
+        <>
+            {opponent && gameWords ? 
+                <div className="page-wrapper">
+                 <div className="stats-container side-container">
+                 <div id="wpm-label">WPM</div>
+                 <span id="wpm"></span>
+                 <div id="wpm-label">Accuracy</div>
+                 <span id="accuracy"></span>
+                 </div>
+                 <div className='container'>
+                   <div className="text-container">
+                     <TypingInput words={gameWords}></TypingInput>
+                   </div>
+                   <Keyboard></Keyboard>
+                 </div>
+                 <div className="hero-container side-container"></div>
+               </div>
+             : 
+             <div className='lobby-container'>
+                <div className='lobby-message'>
+                <span>Waiting for opponent...</span>
+                </div>
+            </div>
+             }
+        </>
     );
 }
 

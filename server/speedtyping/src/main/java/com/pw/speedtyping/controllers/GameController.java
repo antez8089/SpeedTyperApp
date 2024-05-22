@@ -32,6 +32,12 @@ public class GameController {
         matchmakingService.removePlayer(user);
     }
 
+    @MessageMapping("/get-game-words")
+    public void gameWords(String token) throws Exception {
+        User user = (User) jwtService.getUserDetailsFromToken(token);
+        matchmakingService.sendWords(user);
+    }
+
     @MessageMapping("/game")
     public GameStatus game(GameStatus gameStatus) throws Exception {
         return gameStatus;
