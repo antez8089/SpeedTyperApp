@@ -24,7 +24,7 @@ function NavBar() {
                     <>
                     <li><CustomNavLink to="/user">User</CustomNavLink></li>
                     <li>
-                        <button onClick={logout} className="text-sky-600 rounded hover:text-rose-700">Logout</button>
+                        <button onClick={logout} className="text-rose-600 rounded hover:text-rose-700">Logout</button>
                     </li>
                     </>
                     :
