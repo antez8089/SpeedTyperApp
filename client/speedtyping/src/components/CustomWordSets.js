@@ -110,7 +110,7 @@ function CustomWordSets() {
                 <div className="bg-gray-200 px-4 py-2 rounded-lg flex justify-center items-center">
                     <h1>Your word sets</h1>
                 </div>
-                <div className="my-3 pr-2 flex flex-col overflow-y-scroll max-h-96 custom-scrollbar">
+                <div className="my-3 pr-2 flex flex-col overflow-y-scroll max-h-72 custom-scrollbar">
                     {wordSets.length > 0
                     ? wordSets.map((wordSet, index) => {
                         return (
