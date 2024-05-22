@@ -72,9 +72,16 @@ function TypingInput({ words }) {
 
     const calculateWPM = () => {
         const writingTime = (Date.now()-startTime)/1000
-        const wpm = words.length*60/writingTime
+        const wpm = (currentPos-currentPos/words[0].length)*60/(writingTime*words[0].length)
         const wpmDiv = document.body.querySelector("#wpm")
-        wpmDiv.innerHTML = `WPM: ${wpm}`
+        wpmDiv.innerHTML = `${wpm.toFixed(2)}`
+    }
+
+    const calculateAccuracy = () => {
+        const accuracySpan = document.body.querySelector('#accuracy')
+        const letters = document.body.querySelectorAll(".letter, .space")
+        const wrong_letters = document.body.querySelectorAll(".wrong-letter")
+        accuracySpan.innerHTML = `${(100 - (wrong_letters.length*100/letters.length)).toFixed(2)}%`
     }
 
     useEffect(() => {
@@ -87,12 +94,13 @@ function TypingInput({ words }) {
             setStartTime(Date.now())
             setTimerStarted(true)
         }
-        if (0 <= currentPos && currentPos < testWords.length) {
+        if (0 <= currentPos && currentPos < testWords.length && !timerEnded) {
             updateCursorPosition(keyPressed)
+            calculateWPM()
+            calculateAccuracy()
         }
         if (currentPos == testWords.length-1 && keyPressed !== "Backspace" && !timerEnded) {
             setTimerEnded(true)
-            calculateWPM()
         }
     }, [keyPressed])
 

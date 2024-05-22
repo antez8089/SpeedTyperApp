@@ -11,8 +11,8 @@ function KeyboardPage() {
   const getWords = async () => {
     const response = await api.get("/words", {
         params: {
-            num: 9,
-            len: 7
+            num: 63,
+            len: 5
         }
     });
     setWords(response.data)
@@ -23,13 +23,20 @@ function KeyboardPage() {
   }, [])
   
   return (
-    <div className='container'>
-      <div className="text-container">
-        <h4>Let's Type!</h4>
-        <div id="wpm">WPM: </div>
-        <TypingInput words={words}></TypingInput>
+    <div className="page-wrapper">
+      <div className="stats-container side-container">
+      <div id="wpm-label">WPM</div>
+      <span id="wpm"></span>
+      <div id="wpm-label">Accuracy</div>
+      <span id="accuracy"></span>
       </div>
-      <Keyboard></Keyboard>
+      <div className='container'>
+        <div className="text-container">
+          <TypingInput words={words}></TypingInput>
+        </div>
+        <Keyboard></Keyboard>
+      </div>
+      <div className="hero-container side-container"></div>
     </div>
   );
 }
