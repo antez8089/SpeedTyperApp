@@ -23,30 +23,28 @@ public class MatchmakingService {
         this.userRepository = userRepository;
     }
 
-    public void addPlayer(User user) {
+    public synchronized void addPlayer(User user) {
         queue.add(user);
-        User opponent = findMatch(user);
-        if (opponent != null) {
-            activeMatches.put(user.getUsername(), opponent.getUsername());
-            activeMatches.put(opponent.getUsername(), user.getUsername());
-            template.convertAndSendToUser(user.getUsername(), "/queue/match", opponent.getUsername());
-            template.convertAndSendToUser(opponent.getUsername(), "/queue/match", user.getUsername());
+        createMatch();
+    }
+
+
+    private synchronized void createMatch() {
+        User player = queue.poll();
+        if (player != null) {
+            User opponent = queue.poll();
+            if (opponent == null || opponent.getUsername().equals(player.getUsername())) {
+                queue.add(player);
+            } else {
+                activeMatches.put(player.getUsername(), opponent.getUsername());
+                activeMatches.put(opponent.getUsername(), player.getUsername());
+                template.convertAndSendToUser(player.getUsername(), "/queue/match", opponent.getUsername());
+                template.convertAndSendToUser(opponent.getUsername(), "/queue/match", player.getUsername());
+            }
         }
     }
 
-    private User findMatch(User user) {
-        User opponent = queue.poll();
-        if (opponent != null && !opponent.getUsername().equals(user.getUsername())) {
-            queue.poll();
-            return opponent;
-        }
-        if (opponent != null && opponent.getUsername().equals(user.getUsername()) && queue.isEmpty()) {
-            queue.add(user);
-        }
-        return null;
-    }
-
-    public void removePlayer(User user) {
+    public synchronized void removePlayer(User user) {
         queue.removeIf(userInQueue -> userInQueue.getUsername().equals(user.getUsername()));
 
         if (activeMatches.containsKey(user.getUsername())) {

@@ -20,10 +20,7 @@ function MultiPlayerPage() {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log('Connected to WebSocket');
-                stompClient.publish({
-                    destination: '/app/join',
-                    body: accessToken
-                });
+                connectingToLobby();
                 stompClient.subscribe(`/user/${userName}/queue/match`, (message) => {
                     alert(`Match against ${message.body}`);
                     setOpponent(message.body);
@@ -31,6 +28,7 @@ function MultiPlayerPage() {
                 stompClient.subscribe(`/user/${userName}/queue/disconnect`, (message) => {
                     alert(`User ${message.body} disconnected`);
                     setOpponent(null);
+                    connectingToLobby();
                 });
             },
             onStompError: (frame) => {
@@ -38,19 +36,26 @@ function MultiPlayerPage() {
                 console.error('Additional details: ' + frame.body);
             },
         });
-        const handleBeforeUnload = () => {
+        const disconnectingFromLobby = () => {
             stompClient.publish({
                 destination: '/app/disconnect',
                 body: accessToken
             });
         }
 
+        const connectingToLobby = () => {
+            stompClient.publish({
+                destination: '/app/join',
+                body: accessToken
+            });
+        }
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        window.addEventListener('beforeunload', disconnectingFromLobby);
         stompClient.activate();
 
         return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+            window.removeEventListener('beforeunload', disconnectingFromLobby);
             stompClient.publish({
                 destination: '/app/disconnect',
                 body: accessToken
