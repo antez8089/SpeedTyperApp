@@ -6,9 +6,7 @@ import Form from '../components/Form.js';
 function SignUpPage() {
 
     const postData = async (userData) => {
-        console.log(userData);
         if (userData.password !== userData.password_confirmation) {
-            console.log('different passwords');
             return false;
         }
 
@@ -17,8 +15,6 @@ function SignUpPage() {
                 'Content-Type': 'application/json'
             }
         });
-
-        console.log(response);
     }
 
     const fields = [
