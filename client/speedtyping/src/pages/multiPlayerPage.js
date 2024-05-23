@@ -16,6 +16,7 @@ function MultiPlayerPage() {
     const [opponent, setOpponent] = useState(null);
     const location = useLocation();
     const [endGame, setEndGame] = useState(() => () => {});
+    const [updateProgress, setUpdateProgress] = useState(() => () => {});
 
     useEffect(() => {
         const socket = new SockJS(`http://${process.env.REACT_APP_SERVER_BASE_URL}/ws`);
@@ -44,6 +45,10 @@ function MultiPlayerPage() {
                     setOpponent(null);
                     setGameWords(null);
                     connectingToLobby();
+                })
+                stompClient.subscribe(`/user/${userName}/queue/match/update`, (message) => {
+                    console.log(message.body)
+                    document.body.querySelector('.progress-bar').style.setProperty('--progress-height', message.body + '%')
                 })
             },
             onStompError: (frame) => {
@@ -85,6 +90,14 @@ function MultiPlayerPage() {
         }
         setEndGame(() => handleEndGame);
 
+        const handleUpdateProgress = (progress) => {
+            stompClient.publish({
+                destination: '/app/update',
+                body: JSON.stringify({accessToken: accessToken, progress: progress})
+            });
+        }
+        setUpdateProgress(() => handleUpdateProgress);
+
         window.addEventListener('beforeunload', disconnectingFromLobby);
         stompClient.activate();
 
@@ -110,11 +123,16 @@ function MultiPlayerPage() {
                  </div>
                  <div className='container'>
                    <div className="text-container">
-                     <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGame} ></TypingInput>
+                     <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGame} updateProgress={updateProgress} ></TypingInput>
                    </div>
                    <Keyboard></Keyboard>
                  </div>
-                 <div className="hero-container side-container"></div>
+                 <div className="hero-container side-container">
+                    <span id='progress-label'>Opponent's progress</span>
+                    <div className='progress-container'>
+                        <div className='progress-bar'/>
+                    </div>
+                 </div>
                </div>
              : 
              <div className='lobby-container'>

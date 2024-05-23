@@ -80,4 +80,11 @@ public class MatchmakingService {
             template.convertAndSendToUser(opponentName, "/queue/match/end", user.getUsername());
         }
     }
+
+    public synchronized void update(User user, Integer progress) {
+        if (activeMatches.containsKey(user.getUsername())) {
+            String opponentName = activeMatches.get(user.getUsername());
+            template.convertAndSendToUser(opponentName, "/queue/match/update", progress);
+        }
+    }
 }

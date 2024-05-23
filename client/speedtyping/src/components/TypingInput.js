@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useKeyPress from '../hooks/useKeyPress'
 
-function TypingInput({ words, isMultiplayer, onGameEnd }) {
+function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress }) {
     
     const [currentPos, setCurrentPos] = useState(0);
     const [testWords, setTestWords] = useState("");
@@ -78,8 +78,18 @@ function TypingInput({ words, isMultiplayer, onGameEnd }) {
     const calculateAccuracy = () => {
         const accuracySpan = document.body.querySelector('#accuracy')
         const letters = document.body.querySelectorAll(".letter, .space")
-        const wrong_letters = document.body.querySelectorAll(".wrong-letter")
-        accuracySpan.innerHTML = `${(100 - (wrong_letters.length*100/letters.length)).toFixed(2)}%`
+        const wrongLetters = document.body.querySelectorAll(".wrong-letter")
+
+        let firstWrongIndex = currentPos;
+        for (let i = 0; i < letters.length; i++) {
+            if (letters[i].classList.contains('wrong-letter')) {
+                firstWrongIndex = i;
+                break;
+            }
+        }
+        const progress = (firstWrongIndex === letters.length) ? 100 : ((firstWrongIndex+2) / letters.length) * 100;
+        updateProgress(progress);
+        accuracySpan.innerHTML = `${(100 - (wrongLetters.length*100/letters.length)).toFixed(2)}%`
     }
 
     useEffect(() => {

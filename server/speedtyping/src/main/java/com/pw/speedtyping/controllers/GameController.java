@@ -2,9 +2,11 @@ package com.pw.speedtyping.controllers;
 
 import com.pw.speedtyping.database.models.GameStatus;
 import com.pw.speedtyping.database.models.User;
+import com.pw.speedtyping.dtos.ProgressUpdateDto;
 import com.pw.speedtyping.service.JwtService;
 import com.pw.speedtyping.service.MatchmakingService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +44,14 @@ public class GameController {
     public void endGame(String token) throws Exception {
         User user = (User) jwtService.getUserDetailsFromToken(token);
         matchmakingService.endGame(user);
+    }
+
+    @MessageMapping("/update")
+    public void update(@Payload ProgressUpdateDto progressUpdateDto) throws Exception {
+        String token = progressUpdateDto.getAccessToken();
+        Integer progress = progressUpdateDto.getProgress();
+        User user = (User) jwtService.getUserDetailsFromToken(token);
+        matchmakingService.update(user, progress);
     }
 
     @MessageMapping("/game")
