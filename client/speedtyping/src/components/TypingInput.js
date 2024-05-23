@@ -1,7 +1,7 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import useKeyPress from '../hooks/useKeyPress'
 
-function TypingInput({ words }) {
+function TypingInput({ words, isMultiplayer, onGameEnd }) {
     
     const [currentPos, setCurrentPos] = useState(0);
     const [testWords, setTestWords] = useState("");
@@ -97,8 +97,15 @@ function TypingInput({ words }) {
             calculateWPM()
             calculateAccuracy()
         }
-        if (currentPos == testWords.length-1 && keyPressed !== "Backspace" && !timerEnded) {
-            setTimerEnded(true)
+        if (currentPos === testWords.length-1 && keyPressed !== "Backspace" && !timerEnded) {
+            if (isMultiplayer) {
+                if (document.body.querySelectorAll(".wrong-letter").length === 0) {
+                    setTimerEnded(true)
+                    onGameEnd();
+                }
+            } else {
+                setTimerEnded(true)
+            }
         }
     }, [keyPressed])
 

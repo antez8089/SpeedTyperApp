@@ -40,7 +40,7 @@ function KeyboardPage() {
       </div>
       <div className='container'>
         <div className="text-container">
-          <TypingInput words={words}></TypingInput>
+          <TypingInput words={words} isMultiplayer={false} ></TypingInput>
         </div>
         <Keyboard></Keyboard>
       </div>

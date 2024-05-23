@@ -71,4 +71,13 @@ public class MatchmakingService {
             template.convertAndSendToUser(opponentName, "/queue/disconnect", user.getUsername());
         }
     }
+
+    public synchronized void endGame(User user) {
+        if (activeMatches.containsKey(user.getUsername())) {
+            String opponentName = activeMatches.get(user.getUsername());
+            activeMatches.remove(user.getUsername());
+            activeMatches.remove(opponentName);
+            template.convertAndSendToUser(opponentName, "/queue/match/end", user.getUsername());
+        }
+    }
 }

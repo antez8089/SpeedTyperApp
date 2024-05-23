@@ -15,6 +15,7 @@ function MultiPlayerPage() {
     const userName = decode.sub;
     const [opponent, setOpponent] = useState(null);
     const location = useLocation();
+    const [endGame, setEndGame] = useState(() => () => {});
 
     useEffect(() => {
         const socket = new SockJS(`http://${process.env.REACT_APP_SERVER_BASE_URL}/ws`);
@@ -37,6 +38,12 @@ function MultiPlayerPage() {
                 });
                 stompClient.subscribe(`/user/${userName}/queue/match/words`, (message) => {
                     setGameWords(JSON.parse(message.body))
+                })
+                stompClient.subscribe(`/user/${userName}/queue/match/end`, (message) => {
+                    alert('You lost!');
+                    setOpponent(null);
+                    setGameWords(null);
+                    connectingToLobby();
                 })
             },
             onStompError: (frame) => {
@@ -66,6 +73,17 @@ function MultiPlayerPage() {
             });
         }
 
+        const handleEndGame = () => {
+            stompClient.publish({
+                destination: '/app/game-end',
+                body: accessToken
+            });
+            alert('You won!');
+            setOpponent(null);
+            setGameWords(null);
+            connectingToLobby();
+        }
+        setEndGame(() => handleEndGame);
 
         window.addEventListener('beforeunload', disconnectingFromLobby);
         stompClient.activate();
@@ -92,7 +110,7 @@ function MultiPlayerPage() {
                  </div>
                  <div className='container'>
                    <div className="text-container">
-                     <TypingInput words={gameWords}></TypingInput>
+                     <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGame} ></TypingInput>
                    </div>
                    <Keyboard></Keyboard>
                  </div>

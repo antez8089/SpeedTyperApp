@@ -38,6 +38,12 @@ public class GameController {
         matchmakingService.sendWords(user);
     }
 
+    @MessageMapping("/game-end")
+    public void endGame(String token) throws Exception {
+        User user = (User) jwtService.getUserDetailsFromToken(token);
+        matchmakingService.endGame(user);
+    }
+
     @MessageMapping("/game")
     public GameStatus game(GameStatus gameStatus) throws Exception {
         return gameStatus;
