@@ -29,6 +29,10 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
+    @NotNull
+    @Column(columnDefinition = "integer default 0")
+    private Integer score;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<WordsSet> wordsSetList;
 
@@ -40,6 +44,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

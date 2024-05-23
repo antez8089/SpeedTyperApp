@@ -79,16 +79,17 @@ function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress }) {
         const accuracySpan = document.body.querySelector('#accuracy')
         const letters = document.body.querySelectorAll(".letter, .space")
         const wrongLetters = document.body.querySelectorAll(".wrong-letter")
-
-        let firstWrongIndex = currentPos;
-        for (let i = 0; i < letters.length; i++) {
-            if (letters[i].classList.contains('wrong-letter')) {
-                firstWrongIndex = i;
-                break;
+        if (isMultiplayer) {
+            let firstWrongIndex = currentPos;
+            for (let i = 0; i < letters.length; i++) {
+                if (letters[i].classList.contains('wrong-letter')) {
+                    firstWrongIndex = i;
+                    break;
+                }
             }
+            const progress = (firstWrongIndex === letters.length) ? 100 : ((firstWrongIndex+2) / letters.length) * 100;
+            updateProgress(progress);
         }
-        const progress = (firstWrongIndex === letters.length) ? 100 : ((firstWrongIndex+2) / letters.length) * 100;
-        updateProgress(progress);
         accuracySpan.innerHTML = `${(100 - (wrongLetters.length*100/letters.length)).toFixed(2)}%`
     }
 

@@ -77,6 +77,8 @@ public class MatchmakingService {
             String opponentName = activeMatches.get(user.getUsername());
             activeMatches.remove(user.getUsername());
             activeMatches.remove(opponentName);
+            user.setScore(user.getScore() + 10);
+            userRepository.save(user);
             template.convertAndSendToUser(opponentName, "/queue/match/end", user.getUsername());
         }
     }
