@@ -6,17 +6,9 @@ public class SignInDto {
 
     public SignInDto() {}
 
-    public SignInDto(String email, String password) {
-        this.username = email;
+    public SignInDto(String username, String password) {
+        this.username = username;
         this.password = password;
-    }
-
-    public String getEmail() {
-        return username;
-    }
-
-    public void setEmail(String email) {
-        this.username= username;
     }
 
     public String getUsername() {

@@ -17,9 +17,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
 
-    const login = async (email, password) => {
+    const login = async (username, password) => {
         const body = JSON.stringify({
-            email,
+            username,
             password
         });
         try {
