@@ -19,7 +19,6 @@ function SignUpPage() {
 
     const fields = [
         { id: 'username', label: 'Username', type: 'text', value: '' },
-        { id: 'email', label: 'Email', type: 'email', value: '' },
         { id: 'password', label: 'Password', type: 'password', value: '' },
         { id: 'password_confirmation', label: 'Confirm Password', type: 'password', value: '' },
     ]

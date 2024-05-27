@@ -14,12 +14,12 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = async (userData) => {
-        login(userData.email, userData.password);
+        login(userData.username, userData.password);
         navigate('/user')
     };
 
     const fields = [
-        { id: 'email', label: 'Email', type: 'email', value: '' },
+        { id: 'username', label: 'Username', type: 'text', value: '' },
         { id: 'password', label: 'Password', type: 'password', value: '' },
     ]
 
