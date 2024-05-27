@@ -21,10 +21,6 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
-    @NotNull
-    @Column(unique = true)
-    @Email
-    private String email;
 
     @NotNull
     private String password;
@@ -38,12 +34,12 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String username, String email, String password) {
+    public User(String username, String password) {
         this.username = username;
-        this.email = email;
         this.password = password;
         this.score = 0;
     }
+
 
     public Integer getScore() {
         return score;
@@ -65,7 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

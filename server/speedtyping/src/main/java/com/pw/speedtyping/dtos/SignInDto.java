@@ -1,22 +1,30 @@
 package com.pw.speedtyping.dtos;
 
 public class SignInDto {
-    private String email;
     private String password;
+    private String username;
 
     public SignInDto() {}
 
     public SignInDto(String email, String password) {
-        this.email = email;
+        this.username = email;
         this.password = password;
     }
 
     public String getEmail() {
-        return email;
+        return username;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.username= username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

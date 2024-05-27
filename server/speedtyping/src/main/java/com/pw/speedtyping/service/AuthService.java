@@ -33,11 +33,8 @@ public class AuthService {
         if (userRepository.findByUsername(userSignUpData.getUsername()) != null) {
             return new SignUpResponseDto(false, "user with this username already exists");
         }
-        if (userRepository.findByEmail(userSignUpData.getEmail()) != null) {
-            return new SignUpResponseDto(false, "user with this email already exists");
-        }
 
-        User user = new User(userSignUpData.getUsername(), userSignUpData.getEmail(), encoder.encode(userSignUpData.getPassword()));
+        User user = new User(userSignUpData.getUsername(), encoder.encode(userSignUpData.getPassword()));
 
         try {
             userRepository.save(user);
@@ -51,8 +48,8 @@ public class AuthService {
 
     public SignInResponseDto signIn(SignInDto userSignInData) {
         try {
-            authManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInData.getEmail(), userSignInData.getPassword()));
-            User user = userRepository.findByEmail(userSignInData.getEmail());
+            authManager.authenticate(new UsernamePasswordAuthenticationToken(userSignInData.getUsername(), userSignInData.getPassword()));
+            User user = userRepository.findByUsername(userSignInData.getUsername());
             return new SignInResponseDto(true, "login successful", jwtService.generateToken(user));
         } catch (BadCredentialsException e) {
             return new SignInResponseDto(false, "wrong password", null);

@@ -67,7 +67,7 @@ public class MatchmakingService {
             String opponentName = activeMatches.get(user.getUsername());
             activeMatches.remove(user.getUsername());
             activeMatches.remove(opponentName);
-            queue.add(userRepository.findByEmail(opponentName));
+            queue.add(userRepository.findByUsername(opponentName));
             template.convertAndSendToUser(opponentName, "/queue/disconnect", user.getUsername());
         }
     }
