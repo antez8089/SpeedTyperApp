@@ -27,4 +27,11 @@ public class UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    public boolean setUsername(User user, String newUsername) {
+        User userFromDb = userRepository.findByUsername(user.getUsername());
+        userFromDb.setUsername(newUsername);
+        userRepository.save(userFromDb);
+        return true;
+    }
 }

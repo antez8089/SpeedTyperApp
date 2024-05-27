@@ -45,6 +45,10 @@ public class User implements UserDetails {
         return score;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public void setScore(Integer score) {
         this.score = score;
     }
