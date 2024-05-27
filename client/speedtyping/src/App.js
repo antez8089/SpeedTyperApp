@@ -3,6 +3,7 @@ import { useAuth } from './contexts/AuthContext.jsx';
 import { Navigate } from 'react-router-dom';
 import HomePage from './pages/home.js';
 import KeyboardPage from './pages/keyboardPage.js';
+import Ranking from './pages/Ranking.js';
 import WordsPage from './pages/wordsPage.js';
 import NavBar from './components/NavBar.js';
 import SignUpPage from './pages/signUpPage.js';
@@ -25,6 +26,7 @@ function App() {
       <Routes>
         {/* <Route path='/' element={<HomePage/>} /> */}
         <Route path='/' element={<KeyboardPage/>} />
+        <Route path='ranking' element={<Ranking/>} />
         {/* <Route path='/words' element={<WordsPage/>} /> */}
         <Route path='/sign-up' element={<SignUpPage/>} />
         <Route path='/login' element={!isAuthenticated ? <LoginPage/> : <Navigate to='/user' />} />

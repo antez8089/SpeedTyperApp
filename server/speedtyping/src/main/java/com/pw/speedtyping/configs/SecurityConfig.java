@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/sign-up").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/sign-in").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/words").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/ranking").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )

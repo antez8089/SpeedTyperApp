@@ -16,7 +16,8 @@ function NavBar() {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="self-center text-2xl" style={{color: '#66FCF1'}}>SpeedTyper</Link>
                 
-                <ul className="block font-medium flex p-2 items-center gap-6"style={{color: '#66FCF1'}}>
+                <ul className="font-medium flex p-2 items-center gap-6"style={{color: '#66FCF1'}}>
+                    <li><CustomNavLink to="/ranking">Ranking</CustomNavLink></li>
                     <li><CustomNavLink to="/fight">Fight</CustomNavLink></li>
                     <li><CustomNavLink to="/">Keyboard</CustomNavLink></li>
                     {/* <li><CustomNavLink to="/words">Words</CustomNavLink></li> */}
