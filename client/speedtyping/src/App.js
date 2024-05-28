@@ -1,6 +1,7 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext.jsx';
-import { Navigate } from 'react-router-dom';
+//import { Navigate } from 'react-router-dom';
 import HomePage from './pages/home.js';
 import KeyboardPage from './pages/keyboardPage.js';
 import Ranking from './pages/Ranking.js';
@@ -10,11 +11,28 @@ import SignUpPage from './pages/signUpPage.js';
 import LoginPage from './pages/loginPage.js';
 import UserPage from './pages/userPage.js';
 import MultiPlayerPage from './pages/multiPlayerPage.js';
-
+import Modal from './components/Modal';
+import './index.css';  
 
 function App() {
-
   const { isAuthenticated } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+
+  const handlePlayAgain = () => {
+    console.log("GRAJ DALEJ clicked");
+    setShowModal(false);
+    
+  };
+
+  const handleEndForToday = () => {
+    console.log("KONIEC NA DZIŚ clicked");
+    window.location.href = "/"; 
+  };
+
+  const endGame = () => {
+    console.log("End Game clicked");
+    setShowModal(true);
+  };
 
   if (isAuthenticated === null) {
     return <h1 className='bg-white'>Loading</h1>
@@ -25,14 +43,23 @@ function App() {
       <NavBar />
       <Routes>
         {/* <Route path='/' element={<HomePage/>} /> */}
+<<<<<<< HEAD
         <Route path='/' element={<KeyboardPage/>} />
         <Route path='ranking' element={<Ranking/>} />
+=======
+        <Route path='/' element={<KeyboardPage endGame={endGame} />} />
+>>>>>>> c3ceac2 (finish button)
         {/* <Route path='/words' element={<WordsPage/>} /> */}
-        <Route path='/sign-up' element={<SignUpPage/>} />
-        <Route path='/login' element={!isAuthenticated ? <LoginPage/> : <Navigate to='/user' />} />
-        <Route path='/user' element={isAuthenticated ? <UserPage/> : <Navigate to='/login' />} />
-        <Route path='/fight' element={isAuthenticated ? <MultiPlayerPage/> : <Navigate to='/login' />} />
+        <Route path='/sign-up' element={<SignUpPage />} />
+        <Route path='/login' element={!isAuthenticated ? <LoginPage /> : <Navigate to='/user' />} />
+        <Route path='/user' element={isAuthenticated ? <UserPage /> : <Navigate to='/login' />} />
+        <Route path='/fight' element={isAuthenticated ? <MultiPlayerPage /> : <Navigate to='/login' />} />
       </Routes>
+      <Modal 
+        show={showModal}
+        handlePlayAgain={handlePlayAgain}
+        handleEndForToday={handleEndForToday}
+      />
     </HashRouter>
   );
 }
