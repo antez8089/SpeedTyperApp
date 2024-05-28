@@ -43,12 +43,8 @@ function App() {
       <NavBar />
       <Routes>
         {/* <Route path='/' element={<HomePage/>} /> */}
-<<<<<<< HEAD
-        <Route path='/' element={<KeyboardPage/>} />
         <Route path='ranking' element={<Ranking/>} />
-=======
         <Route path='/' element={<KeyboardPage endGame={endGame} />} />
->>>>>>> c3ceac2 (finish button)
         {/* <Route path='/words' element={<WordsPage/>} /> */}
         <Route path='/sign-up' element={<SignUpPage />} />
         <Route path='/login' element={!isAuthenticated ? <LoginPage /> : <Navigate to='/user' />} />
