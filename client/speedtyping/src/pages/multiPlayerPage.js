@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import TypingInput from '../components/TypingInput';
 import Keyboard from '../components/Keyboard';
 
-function MultiPlayerPage() {
+function MultiPlayerPage({ endGame }) {
 
     const [gameWords, setGameWords] = useState(null);
     const accessToken = Cookies.get("access_token");
@@ -15,7 +15,7 @@ function MultiPlayerPage() {
     const userName = decode.sub;
     const [opponent, setOpponent] = useState(null);
     const location = useLocation();
-    const [endGame, setEndGame] = useState(() => () => {});
+    const [endGameHandler, setEndGameHandler] = useState(() => () => {});
     const [updateProgress, setUpdateProgress] = useState(() => () => {});
 
     useEffect(() => {
@@ -38,45 +38,46 @@ function MultiPlayerPage() {
                     connectingToLobby();
                 });
                 stompClient.subscribe(`/user/${userName}/queue/match/words`, (message) => {
-                    setGameWords(JSON.parse(message.body))
-                })
+                    setGameWords(JSON.parse(message.body));
+                });
                 stompClient.subscribe(`/user/${userName}/queue/match/end`, (message) => {
                     alert('You lost!');
                     setOpponent(null);
                     setGameWords(null);
                     connectingToLobby();
-                })
+                });
                 stompClient.subscribe(`/user/${userName}/queue/match/update`, (message) => {
-                    console.log(message.body)
-                    document.body.querySelector('.progress-bar').style.setProperty('--progress-height', message.body + '%')
-                })
+                    console.log(message.body);
+                    document.body.querySelector('.progress-bar').style.setProperty('--progress-height', message.body + '%');
+                });
             },
             onStompError: (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
                 console.error('Additional details: ' + frame.body);
             },
         });
+
         const disconnectingFromLobby = () => {
             setGameWords(null);
             stompClient.publish({
                 destination: '/app/disconnect',
                 body: accessToken
             });
-        }
+        };
 
         const getWords = () => {
             stompClient.publish({
                 destination: '/app/get-game-words',
                 body: accessToken
             });
-        }
+        };
 
         const connectingToLobby = () => {
             stompClient.publish({
                 destination: '/app/join',
                 body: accessToken
             });
-        }
+        };
 
         const handleEndGame = () => {
             stompClient.publish({
@@ -87,15 +88,17 @@ function MultiPlayerPage() {
             setOpponent(null);
             setGameWords(null);
             connectingToLobby();
-        }
-        setEndGame(() => handleEndGame);
+        };
+
+        setEndGameHandler(() => handleEndGame);
 
         const handleUpdateProgress = (progress) => {
             stompClient.publish({
                 destination: '/app/update',
-                body: JSON.stringify({accessToken: accessToken, progress: progress})
+                body: JSON.stringify({ accessToken: accessToken, progress: progress })
             });
-        }
+        };
+
         setUpdateProgress(() => handleUpdateProgress);
 
         window.addEventListener('beforeunload', disconnectingFromLobby);
@@ -106,7 +109,7 @@ function MultiPlayerPage() {
             stompClient.publish({
                 destination: '/app/disconnect',
                 body: accessToken
-            })
+            });
             stompClient.deactivate();
         };
     }, [accessToken, userName, location]);
@@ -115,32 +118,35 @@ function MultiPlayerPage() {
         <>
             {opponent && gameWords ? 
                 <div className="page-wrapper">
-                 <div className="stats-container side-container">
-                 <div id="wpm-label">WPM</div>
-                 <span id="wpm"></span>
-                 <div id="wpm-label">Accuracy</div>
-                 <span id="accuracy"></span>
-                 </div>
-                 <div className='container'>
-                   <div className="text-container">
-                     <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGame} updateProgress={updateProgress} ></TypingInput>
-                   </div>
-                   <Keyboard></Keyboard>
-                 </div>
-                 <div className="hero-container side-container">
-                    <span id='progress-label'>Opponent's progress</span>
-                    <div className='progress-container'>
-                        <div className='progress-bar'/>
+                    <div className="stats-container side-container">
+                        <div id="wpm-label">WPM</div>
+                        <span id="wpm"></span>
+                        <div id="wpm-label">Accuracy</div>
+                        <span id="accuracy"></span>
                     </div>
-                 </div>
-               </div>
-             : 
-             <div className='lobby-container'>
-                <div className='lobby-message'>
-                <span>Waiting for opponent...</span>
+                    <div className='container'>
+                        <div className="text-container">
+                            <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGameHandler} updateProgress={updateProgress}></TypingInput>
+                        </div>
+                        <Keyboard></Keyboard>
+                        <button onClick={endGame} className="mt-6 bg-red-600 text-white py-3 px-6 rounded hover:bg-red-800">
+                            Zakończ Grę
+                        </button>
+                    </div>
+                    <div className="hero-container side-container">
+                        <span id='progress-label'>Opponent's progress</span>
+                        <div className='progress-container'>
+                            <div className='progress-bar' />
+                        </div>
+                    </div>
                 </div>
-            </div>
-             }
+            : 
+                <div className='lobby-container'>
+                    <div className='lobby-message'>
+                        <span>Waiting for opponent...</span>
+                    </div>
+                </div>
+            }
         </>
     );
 }

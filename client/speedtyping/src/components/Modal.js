@@ -1,6 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Modal = ({ show, handlePlayAgain, handleEndForToday }) => {
+  const navigate = useNavigate();
+
+  const handleEndAndNavigate = () => {
+    console.log("FINISH clicked");
+    handleEndForToday(); // Zamknięcie modalnego okna
+    navigate('/user'); // Przekierowanie na stronę użytkownika
+  };
+
   if (!show) {
     return null;
   }
@@ -12,12 +21,12 @@ const Modal = ({ show, handlePlayAgain, handleEndForToday }) => {
         <button 
           className="bg-blue-500 text-white py-2 px-4 rounded mr-4 hover:bg-blue-700" 
           onClick={handlePlayAgain}>
-          FINISH
+          ONE MORE GAME
         </button>
         <button 
           className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700" 
-          onClick={handleEndForToday}>
-          ONE MORE GAME
+          onClick={handleEndAndNavigate}>
+          FINISH
         </button>
       </div>
     </div>

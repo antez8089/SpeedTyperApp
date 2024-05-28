@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext.jsx';
-//import { Navigate } from 'react-router-dom';
 import HomePage from './pages/home.js';
 import KeyboardPage from './pages/keyboardPage.js';
 import Ranking from './pages/Ranking.js';
@@ -17,16 +16,17 @@ import './index.css';
 function App() {
   const { isAuthenticated } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [key, setKey] = useState(0); // Dodaj stan klucza do resetowania
 
   const handlePlayAgain = () => {
-    console.log("GRAJ DALEJ clicked");
+    console.log("ONE MORE GAME clicked");
     setShowModal(false);
-    
+    setKey(prevKey => prevKey + 1); // Zwiększ klucz, aby wymusić ponowne renderowanie komponentu
   };
 
   const handleEndForToday = () => {
-    console.log("KONIEC NA DZIŚ clicked");
-    window.location.href = "/"; 
+    console.log("FINISH clicked");
+    setShowModal(false);
   };
 
   const endGame = () => {
@@ -42,14 +42,19 @@ function App() {
     <HashRouter>
       <NavBar />
       <Routes>
+<<<<<<< HEAD
         {/* <Route path='/' element={<HomePage/>} /> */}
         <Route path='ranking' element={<Ranking/>} />
         <Route path='/' element={<KeyboardPage endGame={endGame} />} />
         {/* <Route path='/words' element={<WordsPage/>} /> */}
+=======
+        <Route path='ranking' element={<Ranking />} />
+        <Route path='/' element={<KeyboardPage key={key} endGame={endGame} />} />
+>>>>>>> 0212208 (finish button completed)
         <Route path='/sign-up' element={<SignUpPage />} />
         <Route path='/login' element={!isAuthenticated ? <LoginPage /> : <Navigate to='/user' />} />
         <Route path='/user' element={isAuthenticated ? <UserPage /> : <Navigate to='/login' />} />
-        <Route path='/fight' element={isAuthenticated ? <MultiPlayerPage /> : <Navigate to='/login' />} />
+        <Route path='/fight' element={isAuthenticated ? <MultiPlayerPage endGame={endGame} /> : <Navigate to='/login' />} />
       </Routes>
       <Modal 
         show={showModal}
