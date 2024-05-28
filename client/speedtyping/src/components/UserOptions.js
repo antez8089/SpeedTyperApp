@@ -15,10 +15,17 @@ function UserOptions() {
                 }
             });
             console.log(response.data);
+    
+            if (response.data.logged_in) {
+                Cookies.set('access_token', response.data.token, {path: '/'});
+            } else {
+                console.error(response.data.message);
+            }
         } catch (error) {
             console.error(error);
         }
     }
+    
 
     return (
         <div className="user-boxer">
