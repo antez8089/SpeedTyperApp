@@ -42,15 +42,10 @@ function App() {
     <HashRouter>
       <NavBar />
       <Routes>
-<<<<<<< HEAD
         {/* <Route path='/' element={<HomePage/>} /> */}
-        <Route path='ranking' element={<Ranking/>} />
-        <Route path='/' element={<KeyboardPage endGame={endGame} />} />
-        {/* <Route path='/words' element={<WordsPage/>} /> */}
-=======
         <Route path='ranking' element={<Ranking />} />
         <Route path='/' element={<KeyboardPage key={key} endGame={endGame} />} />
->>>>>>> 0212208 (finish button completed)
+        {/* <Route path='/words' element={<WordsPage/>} /> */}
         <Route path='/sign-up' element={<SignUpPage />} />
         <Route path='/login' element={!isAuthenticated ? <LoginPage /> : <Navigate to='/user' />} />
         <Route path='/user' element={isAuthenticated ? <UserPage /> : <Navigate to='/login' />} />
