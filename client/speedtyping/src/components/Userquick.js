@@ -1,22 +1,30 @@
-import { useEffect } from "react";
+import { useState, useEffect } from 'react';
+import api from '../api/axiosConfig.js';
+import Cookies from "js-cookie";
 
 function UserQuick() {
+    const [data, setData] = useState(null);
+    const access_token = Cookies.get('access_token');
 
-    useEffect(() => {
-        // TODO: Fetch user data from the server
-    }, [])
+    const response = api.get("/user/get-username", {
+        headers: {
+            Authorization: `Bearer ${access_token}`
+        }
+    }).then(response => {
+        setData(response.data);
+    });
 
-  return (
-    <div className="usr">
-        <div className="user-photo">
-            <img src="/unnamed.jpg" alt="User Photo" />
+    return (
+        <div className="usr">
+            <div className="user-photo">
+                <img src="/unnamed.jpg" alt="User" />
+            </div>
+            <div className="user-info">
+            <div>
+                <div style={{ color: '#66FCF1' }}>Username : {data}</div>
+            </div>
+            </div>
         </div>
-        <div className="user-info">
-            <h2>Imie: Tu imie</h2>
-            <p>Email: Tu email</p>
-            <p>Wiek: tu wiek</p>
-        </div>
-    </div>
     );
 }
 

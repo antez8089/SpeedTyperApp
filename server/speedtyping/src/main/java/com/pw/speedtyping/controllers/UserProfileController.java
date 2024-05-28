@@ -5,10 +5,7 @@ import com.pw.speedtyping.database.models.User;
 import com.pw.speedtyping.dtos.NewWordsSetDto;
 import com.pw.speedtyping.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,8 +16,14 @@ public class UserProfileController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/user/set-username")
+    @PostMapping("/set-username")
     public boolean String(@AuthenticationPrincipal User user, @RequestBody String newUsername) {
         return userService.setUsername(user, newUsername);
+    }
+
+    @GetMapping("/get-username")
+    public String getUsername(@AuthenticationPrincipal User user) {
+        return user.getUsername();
+
     }
 }
