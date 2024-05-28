@@ -57,8 +57,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/sign-in").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/words").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/ranking").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/get-username").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/set-username").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -14,7 +14,6 @@ function UserOptions() {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log(response.data);
     
             if (response.data.logged_in) {
                 Cookies.set('access_token', response.data.token, {path: '/'});
@@ -24,6 +23,7 @@ function UserOptions() {
         } catch (error) {
             console.error(error);
         }
+        window.location.reload();
     }
     
 
