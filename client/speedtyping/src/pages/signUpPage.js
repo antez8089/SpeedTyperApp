@@ -1,10 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import { formToJSON } from 'axios';
 import api from '../api/axiosConfig.js'
 import Form from '../components/Form.js';
 
 
 function SignUpPage() {
-
+    
+    const navigate = useNavigate();
     const postData = async (userData) => {
         if (userData.password !== userData.password_confirmation) {
             return false;
@@ -15,6 +17,8 @@ function SignUpPage() {
                 'Content-Type': 'application/json'
             }
         });
+        navigate('/login');
+
     }
 
     const fields = [
