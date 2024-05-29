@@ -37,4 +37,10 @@ public class UserProfileController {
         return user.getUsername();
 
     }
+
+
+    @GetMapping("/get-score")
+    public Integer getScore(@AuthenticationPrincipal User user) {
+        return user.getScore();
+    }
 }
