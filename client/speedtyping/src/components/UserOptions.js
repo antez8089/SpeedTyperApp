@@ -14,11 +14,18 @@ function UserOptions() {
                     Authorization: `Bearer ${access_token}`
                 }
             });
-            console.log(response.data);
+    
+            if (response.data.logged_in) {
+                Cookies.set('access_token', response.data.token, {path: '/'});
+            } else {
+                console.error(response.data.message);
+            }
         } catch (error) {
             console.error(error);
         }
+        window.location.reload();
     }
+    
 
     return (
         <div className="user-boxer">
