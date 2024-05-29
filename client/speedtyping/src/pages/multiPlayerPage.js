@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import TypingInput from '../components/TypingInput';
 import Keyboard from '../components/Keyboard';
+import Modal from '../components/Modal';
 
-function MultiPlayerPage({ endGame }) {
+function MultiPlayerPage() {
 
     const [gameWords, setGameWords] = useState(null);
     const accessToken = Cookies.get("access_token");
@@ -17,6 +18,11 @@ function MultiPlayerPage({ endGame }) {
     const location = useLocation();
     const [endGameHandler, setEndGameHandler] = useState(() => () => {});
     const [updateProgress, setUpdateProgress] = useState(() => () => {});
+    const [surrenderHandler, setSurrenderHandler] = useState(() => () => {});
+    const [playAgainHandler, setPlayAgainHandler] = useState(() => () => {});
+    const [endForTodayHandler, setEndForTodayHandler] = useState(() => () => {});
+
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const socket = new SockJS(`http://${process.env.REACT_APP_SERVER_BASE_URL}/ws`);
@@ -24,7 +30,6 @@ function MultiPlayerPage({ endGame }) {
             webSocketFactory: () => socket,
             reconnectDelay: 5000,
             onConnect: () => {
-                console.log('Connected to WebSocket');
                 connectingToLobby();
                 stompClient.subscribe(`/user/${userName}/queue/match`, (message) => {
                     alert(`Match against ${message.body}`);
@@ -32,19 +37,15 @@ function MultiPlayerPage({ endGame }) {
                     getWords();
                 });
                 stompClient.subscribe(`/user/${userName}/queue/disconnect`, (message) => {
-                    alert(`User ${message.body} disconnected`);
-                    setOpponent(null);
-                    setGameWords(null);
-                    connectingToLobby();
+                    alert(`User ${message.body} disconnected. You won!`);
+                    setShowModal(true);
                 });
                 stompClient.subscribe(`/user/${userName}/queue/match/words`, (message) => {
                     setGameWords(JSON.parse(message.body));
                 });
                 stompClient.subscribe(`/user/${userName}/queue/match/end`, (message) => {
                     alert('You lost!');
-                    setOpponent(null);
-                    setGameWords(null);
-                    connectingToLobby();
+                    setShowModal(true);
                 });
                 stompClient.subscribe(`/user/${userName}/queue/match/update`, (message) => {
                     console.log(message.body);
@@ -57,8 +58,24 @@ function MultiPlayerPage({ endGame }) {
             },
         });
 
-        const disconnectingFromLobby = () => {
+        const handlePlayAgain = () => {
+            setShowModal(false);
+            setOpponent(null);
             setGameWords(null);
+            connectingToLobby()
+          };
+
+          setPlayAgainHandler(() => handlePlayAgain);
+        
+        const handleEndForToday = () => {
+            setOpponent(null);
+            setGameWords(null);
+            setShowModal(false);
+          };
+
+        setEndForTodayHandler(() => handleEndForToday);
+
+        const disconnectingFromLobby = () => {
             stompClient.publish({
                 destination: '/app/disconnect',
                 body: accessToken
@@ -85,9 +102,7 @@ function MultiPlayerPage({ endGame }) {
                 body: accessToken
             });
             alert('You won!');
-            setOpponent(null);
-            setGameWords(null);
-            connectingToLobby();
+            setShowModal(true);
         };
 
         setEndGameHandler(() => handleEndGame);
@@ -100,6 +115,14 @@ function MultiPlayerPage({ endGame }) {
         };
 
         setUpdateProgress(() => handleUpdateProgress);
+
+        const surrender = () => {
+            disconnectingFromLobby();
+            alert('You lost!')
+            setShowModal(true);
+        }
+
+        setSurrenderHandler(() => surrender);
 
         window.addEventListener('beforeunload', disconnectingFromLobby);
         stompClient.activate();
@@ -129,9 +152,14 @@ function MultiPlayerPage({ endGame }) {
                             <TypingInput words={gameWords} isMultiplayer={true} onGameEnd={endGameHandler} updateProgress={updateProgress}></TypingInput>
                         </div>
                         <Keyboard></Keyboard>
-                        <button onClick={endGame} className="mt-6 bg-red-600 text-white py-3 px-6 rounded hover:bg-red-800">
-                            Zakończ Grę
+                        <button onClick={surrenderHandler} className="mt-custom mb-2 bg-red-600 text-white py-3 px-6 rounded hover:bg-red-800">
+                        END
                         </button>
+                        <Modal 
+                            show={showModal}
+                            handlePlayAgain={playAgainHandler}
+                            handleEndForToday={endForTodayHandler}
+                        />
                     </div>
                     <div className="hero-container side-container">
                         <span id='progress-label'>Opponent's progress</span>

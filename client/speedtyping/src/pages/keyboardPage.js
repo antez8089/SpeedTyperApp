@@ -3,14 +3,31 @@ import Keyboard from "../components/Keyboard";
 import TypingInput from "../components/TypingInput";
 import api from"../api/axiosConfig";
 import { useLocation } from "react-router-dom";
+import Modal from "../components/Modal";
 
-function KeyboardPage({ endGame }) {
-  console.log("Received prop endGame:", endGame); // Dodane logowanie
+function KeyboardPage() {
 
   const location = useLocation();
   const { userWords } = location.state || { userWords: [] };
 
   const [words, setWords] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
+  const [isGameEnded, setIsGameEnded] = useState(false);
+
+  const handlePlayAgain = () => {
+    setShowModal(false);
+    window.location.reload();
+  };
+
+  const handleEndForToday = () => {
+    setShowModal(false);
+  };
+
+  const endGame = () => {
+    setShowModal(true);
+    setIsGameEnded(true);
+  };
 
   const getWords = async () => {
     const response = await api.get("/words", {
@@ -40,14 +57,20 @@ function KeyboardPage({ endGame }) {
       </div>
       <div className="container">
         <div className="text-container">
-          <TypingInput words={words} isMultiplayer={false}></TypingInput>
+          <TypingInput words={words} isGameEnded={isGameEnded} isMultiplayer={false}></TypingInput>
         </div>
         <Keyboard></Keyboard>
-        <button onClick={() => { console.log("Button clicked"); endGame(); }} className="mt-custom mb-4 bg-red-600 text-white py-3 px-6 rounded hover:bg-red-800">
-          Zakończ Grę
+      </div>
+      <div className="hero-container side-container">
+      <button onClick={endGame} className="mt-custom mb-2 bg-red-600 text-white py-3 px-6 rounded hover:bg-red-800">
+          END
         </button>
       </div>
-      <div className="hero-container side-container"></div>
+      <Modal 
+        show={showModal}
+        handlePlayAgain={handlePlayAgain}
+        handleEndForToday={handleEndForToday}
+      />
     </div>
   );
 }

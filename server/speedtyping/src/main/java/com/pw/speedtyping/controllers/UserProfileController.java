@@ -2,7 +2,6 @@ package com.pw.speedtyping.controllers;
 
 
 import com.pw.speedtyping.database.models.User;
-import com.pw.speedtyping.dtos.NewWordsSetDto;
 import com.pw.speedtyping.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

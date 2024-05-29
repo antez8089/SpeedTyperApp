@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useKeyPress from '../hooks/useKeyPress'
 
-function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress }) {
+function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress, isGameEnded }) {
     
     const [currentPos, setCurrentPos] = useState(0);
     const [testWords, setTestWords] = useState("");
@@ -99,6 +99,12 @@ function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress }) {
     }, [words])
 
     useEffect(() => {
+        if (isGameEnded) {
+            setTimerEnded(true);
+            if (isMultiplayer) {
+                onGameEnd();
+            }
+        }
         if (!timerStarted && keyPressed) {
             setStartTime(Date.now())
             setTimerStarted(true)
@@ -118,7 +124,7 @@ function TypingInput({ words, isMultiplayer, onGameEnd, updateProgress }) {
                 setTimerEnded(true)
             }
         }
-    }, [keyPressed])
+    }, [keyPressed, isGameEnded])
 
     return (
     <div className="text">
