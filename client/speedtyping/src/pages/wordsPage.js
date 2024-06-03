@@ -3,7 +3,7 @@ import api from '../api/axiosConfig.js'
 
   
 function WordsPage() {
-    const [words, setWords] = useState();
+    const [words, setWords] = useState([]);
     const [numberOfWords, setNumberOfWords] = useState(1);
 
     const getWords = async () => {
@@ -12,6 +12,7 @@ function WordsPage() {
                 num: numberOfWords
             }
         });
+        console.log(response.data);
         setWords(response.data);
     }
 
@@ -27,7 +28,7 @@ function WordsPage() {
         <div>
             <input type="number" value={numberOfWords} onChange={inputChange} />
             <button onClick={buttonClick}>Get Words</button>
-            <div>{words}</div>
+            <div>{words.map(word => <p key={word}>{word}</p>)}</div>
         </div>
     );
 }
