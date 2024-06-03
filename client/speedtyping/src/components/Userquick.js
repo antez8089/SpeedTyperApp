@@ -17,11 +17,11 @@ function UserQuick() {
     return (
         <div className="usr">
             <div className="user-photo">
-                <img src="/unnamed.jpg" alt="User" />
+                <img src="/speedtyping_logo.png" alt="User" />
             </div>
             <div className="user-info">
             <div>
-                <div style={{ color: '#66FCF1' }}>Username : {data}</div>
+                <div style={{ color: '#66FCF1' }}>Username: {data}</div>
             </div>
             </div>
         </div>

@@ -28,14 +28,15 @@ function UserOptions() {
     
 
     return (
-        <div className="user-boxer">
-            <div>change user name:</div>
-            <form onSubmit={postData}>
+        <div className="rounded-lg user-boxer">
+            <div className='text-2xl font-bold text-white'>Change user name:</div>
+            <form onSubmit={postData} className='flex gap-4'>
                 <input type="text" name="username" placeholder="username" required
                     value={username}
                     onChange={e => setUsername(e.target.value)}
+                    className='p-2 bg-sky-200 rounded-lg'
                 />
-                <input type="submit" />
+                <input type="submit" className='p-2 bg-sky-400 rounded-lg hover:bg-sky-300 hover:cursor-pointer' />
             </form>
         </div>
     );

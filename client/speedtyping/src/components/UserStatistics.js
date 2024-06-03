@@ -18,7 +18,7 @@ function UserStatisticks() {
     return (
       <div className="user-boxer">
             <div>
-                <div>Score : {data}</div>
+                <div className='text-5xl text-white'>Score : {data}</div>
             </div>
       </div>
       );
