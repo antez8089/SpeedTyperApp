@@ -1,37 +1,30 @@
 # SpeedTyping
 
-## PAP24 - Z02
 
-##  Autorzy:
-- Kacper Bielak
-- Antoni Grajek
-- Paweł Grzankowski
-- Igor Szabłowski
+## Application Description
+A web application for testing and training typing speed. Users will have the ability to create an account, allowing them to track progress and earn achievements. Users will also be able to create their own set of words or texts for training. By default, the application will more frequently select words that the user commonly mistypes. Unregistered users will have access to checking their WPM using predefined words from the platform. Additionally, a ranking system will be implemented based on users' typing speed and error rates.
 
-## Opis aplikacji
-Aplikacja webowa do testowania i trenowania szybkiego pisania. Użytkownik będzie miał możliwość założenia konta co umożliwi mu śledzenie progresu oraz zbieranie osiągnięć. Użytkownik będzie mógł także tworzyć swój własny zbiór słów, bądź tekstów na których będzie mógł trenować. Domyślnie aplikacja będzie dobierać użytkownikowi częściej słowa na których się najczęściej mylił. Niezalogowany użytkownik będzie miał dostęp do sprawdzenia swojego WPM na narzuconych przez stronę słowach. Dodatkowo zaimplementowany zostanie system rankingu użytkowników na postawie ich prędkości pisania oraz popełnionych błędów.
+## Project Assumptions
+### Solution Architecture
+The application will be developed using a three-tier architecture consisting of a database, a server, and a client. The database will be built using PostgreSQL, the server will be developed in Java with Spring, and the client will be built using React. Communication between the client and server will be carried out using REST protocols.
 
-## Założenia projektowe
-### Architektura rozwiązania
-Aplikacja zostanie stworzona w architekturze trzywarstwowej z podziałem na bazę danych, serwer i klienta. Baza danych będzie stworzona w PostgreSQL, serwer w języku Java z wykorzystaniem Springa, natomiast klient w React. Komunikacja pomiędzy klientem, a serwerem będzie odbywać się za pomocą protokołów REST.
+### Controllers
+- User authentication (login and registration)
+- User performance reports (time, errors)
+- Account personalization (custom word database)
 
-### Kontrolery
-- Autoryzacja użytkownika (logowanie i rejestracja)
-- Raport o wynikach użytkownika (czas, błędy)
-- Personalizacja konta (baza własnych słów)
+### Initial Database Structure Assumptions
+#### Tables:
+ - Users:
+ A table containing user authentication data.
+ - WordsContainers:
+ A table containing, among other things, its name, associated with a user.
+ - Words:
+ A table containing words, an error coefficient (determined based on how often a user mistypes a word), associated with a word collection.
 
-### Wstępne założenia struktury bazy danych
-#### Tabele:
- - Users:\
- Tabela zawierająca dane do uwierzytelniania użytkownika.
- - WordsContainers:\
- Tabela zawierająca między innymi swoją nazwę, będąca połączona relacją z użytkownikiem.
- - Words:\
- Tabela zaweierająca słowo, współczynnik pomyłek (dobierany na zasadzie tego jak często użytkownik mylił się na danym słowie), będąca połączona relacją ze zbiorem słów.
-
-Podczas realizacji dodane zostaną również inne tabele związane z osiągnięciami użytkownika, oraz jego personalnymi ustawieniami.\
-Daje nam to wstępną bazę danych w której użytkownik może mieć wiele swoich zbiorów słów, a każdy zbiór może posiadać wiele słów.\
-Dzięki temu użytkownik będzie miał swobodny wybór treningu pomiędzy swoimi zbiorami.
+Additional tables related to user achievements and personal settings will be added during development.
+This structure provides a database where a user can have multiple word collections, and each collection can contain multiple words.
+This allows users to freely choose training sets from their own collections.
 
 ### API
-Na ten moment do pobierania słów korzystamy z API: https://random-word-api.herokuapp.com/home
+Currently, we use the API: https://random-word-api.herokuapp.com/home to fetch words.
